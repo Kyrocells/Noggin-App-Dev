@@ -8,7 +8,7 @@ index.php/menu.php =logout functionality
 
 rent.php = code put default image if no image uploaded at least (pag gusto lng)
 
-menu.php = will fix current button
+menu.php = will fix current button pag lahat tapos na
 
 wala pang return page or something
 
