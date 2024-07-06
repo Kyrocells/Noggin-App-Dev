@@ -34,6 +34,9 @@
                     case 'single_view':
                         include 'single_view.php';
                         break;
+                    case 'single_return':
+                        include 'single_return.php';
+                        break;
                     case 'profile':
                         include 'profile.php';
                         break;
