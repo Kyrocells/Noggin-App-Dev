@@ -43,6 +43,10 @@ require 'functions.php';
                     // case 'transactions':
                     //     include 'transactions.php';
                     //     break;
+                    //uncomment if available na
+                    // case 'reports':
+                    //     include 'reports.php';
+                    //     break;
                     default:
                         include 'view.php';
                         break;
