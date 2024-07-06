@@ -23,7 +23,6 @@
                 Rent
             </a>
             <a href="index.php?page=rent_history" class="list-group-item list-group-item-action not_active">Rent History</a>
-            <a href="index.php?page=return" class="list-group-item list-group-item-action not_active">Return</a>
             <a href="index.php?page=notifications" class="list-group-item list-group-item-action not_active">Notifications</a>
             <a href="index.php?page=profile" class="list-group-item list-group-item-action not_active">Profile</a>
             <a href="index.php?page=" class="list-group-item list-group-item-action not_active">Logout</a> <!--idk pano sa logout-->
