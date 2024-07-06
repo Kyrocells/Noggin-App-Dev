@@ -28,8 +28,8 @@ $start_date = date('Y-m-d');
             </li>
             <li class="list-group-item">
                 <div class="list-button gap-2 mt-2 mb-4">
-                    <button type="button" id="gcashbutton" class="mod_button default-button" onclick="method('gcashpayment')">Gcash</button>
-                    <button type="button" id="cardbutton" class="mod_button" onclick="method('cardpayment')">Card</button>
+                    <button type="button" id="gcashbutton" class="mod_button default-button" onclick="method('Gcash')">Gcash</button>
+                    <button type="button" id="cardbutton" class="mod_button" onclick="method('Card')">Card</button>
                 </div>
 
                 <form class="needs-validation" id="form-element" novalidate action="process_payment.php" method="post">
@@ -66,6 +66,7 @@ $start_date = date('Y-m-d');
 
                     <input type="hidden" name="video_id" value="<?php echo $video_id; ?>">
                     <input type="hidden" id="rentalFee" value="<?php echo htmlspecialchars($video['rental_fee']); ?>">
+                    <input type="hidden" name="payment_method" id="paymentMethod">
 
                     <button type="submit" class="btn confirm_payment_button my-4" id="confirmPaymentBtn">Confirm Payment</button>
                 </form>
@@ -76,9 +77,10 @@ $start_date = date('Y-m-d');
 
 <script>
     function method(type) {
-        if (type === 'gcashpayment') {
+        document.getElementById('paymentMethod').value = type;
+        if (type === 'Gcash') {
             gcashpayment();
-        } else if (type === 'cardpayment') {
+        } else if (type === 'Card') {
             cardpayment();
         }
     }

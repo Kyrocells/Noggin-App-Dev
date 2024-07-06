@@ -2,6 +2,9 @@
 require_once 'functions.php';
 
 
+$user_id = $_SESSION['user_id'];
+$user = getUserProfile($user_id);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_POST['user_id'];
     $username = $_POST['username'];
@@ -12,11 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contact_number = $_POST['contact_number'];
     
     // Handle file upload
-    $profile_picture = $user['profile_picture'];
     if (!empty($_FILES['image']['name'])) {
-        $target_dir = "uploads/";
+        $target_dir = "../img/";
         $profile_picture = $target_dir . basename($_FILES['image']['name']);
         move_uploaded_file($_FILES['image']['tmp_name'], $profile_picture);
+    } else {
+        $profile_picture = $_POST['existing_image'];
     }
 
     // Update user profile
@@ -27,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Failed to update profile.";
     }
 }
-
 ?>
 
 <div class="container profile_container">
@@ -36,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form action="profile.php" method="post" enctype="multipart/form-data">
             <!-- first and last name -->
             <div class="input-group mt-4">
-                <input type="text" class="form-control" name="first_name" placeholder="First Name" aria-label="First Name" value="<?php echo htmlspecialchars($user['first_name']); ?>"readonly >
-                <input type="text" class="form-control" name="last_name" placeholder="Last Name" aria-label="Last Name" value="<?php echo htmlspecialchars($user['last_name']); ?>"readonly  >
+                <input type="text" class="form-control" name="first_name" placeholder="First Name" aria-label="First Name" value="<?php echo htmlspecialchars($user['first_name']); ?>" readonly >
+                <input type="text" class="form-control" name="last_name" placeholder="Last Name" aria-label="Last Name" value="<?php echo htmlspecialchars($user['last_name']); ?>" readonly  >
             </div>
             <!-- username -->
             <div class="form-group mt-4">
@@ -61,8 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <!-- upload image -->
             <div class="form-group">
-                <label for="editImage">Image</label>
+                <label for="editImage">Profile Picture</label>
+                <?php if (!empty($user['profile_picture'])): ?>
+                    <img src="<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="Profile Picture" style="max-width: 200px; display: block; margin-bottom: 10px;">
+                <?php endif; ?>
                 <input type="file" class="form-control" id="editImage" name="image">
+                <input type="hidden" name="existing_image" value="<?php echo htmlspecialchars($user['profile_picture']); ?>">
             </div>
             <!-- hidden user_id -->
             <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user_id); ?>">

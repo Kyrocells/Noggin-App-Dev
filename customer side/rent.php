@@ -9,7 +9,7 @@ if ($conn->connect_error) {
 }
 
 // Update the SQL query to select the necessary fields
-$sql = "SELECT video_id, image, genre, video_title, release_date, length, rental_fee FROM videos ORDER BY genre";
+$sql = "SELECT video_id, Image, genre, video_title, release_date, length, rental_fee, num_videos_available FROM videos ORDER BY genre";
 $result = $conn->query($sql);
 
 $movies_by_genre = array();
@@ -18,22 +18,24 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $genre = $row['genre'];
         $video_id = $row['video_id'];
-        $image = $row['image'];
         $video_title = $row['video_title'];
         $release_year = $row['release_date'];
         $duration = $row['length'];
         $price = $row['rental_fee'];
+        $num_videos_available = $row['num_videos_available'];
+        $image = $row['Image'];
 
         if (!isset($movies_by_genre[$genre])) {
             $movies_by_genre[$genre] = array();
         }
         $movies_by_genre[$genre][] = array(
             'video_id' => $video_id,
-            'image' => $image,
             'video_title' => $video_title,
             'release_date' => $release_year,
             'length' => $duration,
-            'rental_fee' => $price
+            'rental_fee' => $price,
+            'num_videos_available' => $num_videos_available,
+            'Image' => $image
         );
     }
 }
@@ -79,30 +81,33 @@ $conn->close();
                 
                 foreach ($movies as $movie) {
                     echo '<div class="card movie_card">';
-                    echo '<img src="' . $movie['image'] . '" class="card-img-top movie_img" alt="movie picture">';
+                    echo '<img src="' . $movie['Image'] . '" class="card-img-top movie_img" alt="movie picture">';
                     echo '<div class="card-body">';
                     echo '<h5 class="card-title">' . $movie['video_title'] . '</h5>';
                     echo '</div>';
                     echo '<div class="additional-content">';
                     echo '<a href="index.php?page=single_view&video_id=' . $movie['video_id'] . '" class="movie_card_button mb-2">View</a>';
-                    echo '<a href="index.php?page=rent_payment&video_id=' . $movie['video_id'] . '"class="movie_card_button">Rent</a>';
+                    if ($movie['num_videos_available'] > 0) {
+                        echo '<a href="index.php?page=rent_payment&video_id=' . $movie['video_id'] . '" class="movie_card_button">Rent</a>';
+                    } else {
+                        echo '<span class="out_of_stock">Out of Stock</span>';
+                    }
                     echo '</div></div>';
                 }
-                
                 
                 echo '</div></div>'; 
             }
         }
 
-        // pag no videos
+        // If no videos are available
         if (!$movies_found) {
-            echo '<p class="no_videos">No videos available.</p>';
+            echo '<p class="no_videos"><strong>No videos available.</strong></p>';
         }
         ?>
     </div>
 </div>
 
-<!-- pang show and no show ng videos per category using filter-->
+<!-- Show and hide videos per category using filter -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const filter = document.querySelectorAll('#genre-filter .dropdown-item');
@@ -133,4 +138,3 @@ $conn->close();
         });
     });
 </script>
-

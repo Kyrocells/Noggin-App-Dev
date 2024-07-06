@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $start_date = $_POST['start_date'];
     $return_date = $_POST['return_date'];
-    $payment_method = isset($_POST['cardNumber']) ? 'Card' : 'Gcash';
+    $payment_method = $_POST['payment_method'];
 
     // If payment is by card, also get card details
     if ($payment_method === 'Card') {
