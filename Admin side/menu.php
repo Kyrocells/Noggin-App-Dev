@@ -1,47 +1,29 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
-
-
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    
-    <a href="index.php" class="brand-link">
-        <span class="brand-text font-weight-light">Video Rental</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="index.php?page=add" class="nav-link">
-                        <i class="nav-icon fas fa-plus-square"></i>
-                        <p>Add Video</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="index.php?page=view" class="nav-link">
-                        <i class="nav-icon fas fa-video"></i>
-                        <p>View All Videos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="index.php? page=payment" class="nav-link">
-                    <i class="nav-icon fas fa-credit-card"></i>
-                        <p>Rent Fee</p>
-                    </a>
-                </li>
-                <!-- Logout Link -->
-                <li class="nav-item">
-                    <a href="logout.php" class="nav-link">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>Logout</p>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+<aside class="sidebar">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header">
+        <!-- logo --><!-- put in from db -->
+        <img src="img/logo.png" alt="logo">
+        <h5 class="offcanvas-title" id="offcanvasLabel">Video Rental</h5>
+    </div>
+    <hr class="my-1">
+    <div class="offcanvas-body">
+        <!-- profile --><!-- put in from db --><!-- default picture -->
+        <div class="card my-4 menu_card" style="width: 16rem;">
+            <img src="img/alonso.png" class="card-img-top" alt="profile picture">
+            <div class="card-body">
+            <p class="card-text username"  name="username">Admin</p>
+            </div>
+        </div>
+        <!-- buttons --><!-- put in links to redirect -->
+        <div class="list-group my-4">
+            <a href="index.php?page=view" class="list-group-item list-group-item-action active" aria-current="true">
+                Video Catalog
+            </a>
+            <a href="index.php?page=add" class="list-group-item list-group-item-action not_active">Add Video</a>
+            <a href="index.php?page=#" class="list-group-item list-group-item-action not_active">Transactions</a><!--change # to page name ONLY without filetype-->
+            <a href="index.php?page=#" class="list-group-item list-group-item-action not_active">Reports</a><!--change # to page name ONLY without filetype-->
+            <a href="index.php?page=" class="list-group-item list-group-item-action not_active">Logout</a> <!--idk pano sa logout-->
+        </div>
+    </div>
     </div>
 </aside>
