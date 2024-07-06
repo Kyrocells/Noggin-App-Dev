@@ -1,16 +1,4 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['alert'])) {
-    $_SESSION['alert'] = null;
-}
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-if (!isset($_SESSION['videos'])) {
-    $_SESSION['videos'] = array(); 
-    // Initialize videos session array if not already set
-}
 require 'functions.php';
 ?>
 <!DOCTYPE html>
@@ -19,23 +7,24 @@ require 'functions.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Rental System</title>
-    <!-- AdminLTE CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/adminlte.min.css">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="admin_style.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/adminlte.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
-    <!-- Navbar -->
-    <?php include 'menu.php'; ?>
-    <!-- Content Wrapper. Contains page content -->
+<body>
+    <div class="wrapper">
+        <!-- include the menu -->
+        <?php include_once 'menu.php'; ?>
+    </div>
+
     <div class="content-wrapper">
         <section class="content">
             <div class="container-fluid">
                 <?php
-                $page = $_GET['page'] ?? 'home';
+                $page = $_GET['page'] ?? 'home'; //idk wtf this is nasa code ni sir
                 // Default to home page if no specific page request
                 switch ($page) {
                     case 'add':
@@ -50,39 +39,30 @@ require 'functions.php';
                     case 'view':
                         include 'view.php';
                         break;
-                    case 'payment':
-                        include 'payment.php';
-                        break;
-                    case 'view_single':
-                        include 'view_single.php';
-                        break;
+                    //uncomment if available na
+                    // case 'transactions':
+                    //     include 'transactions.php';
+                    //     break;
                     default:
-                        echo '<div class="alert alert-info">Welcome to the Video Rental System!</div>';
+                        include 'view.php';
                         break;
                 }
                 ?>
-                <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-                    <canvas id="myChart"></canvas>
-                </div>
-                <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-                    <canvas id="myLineChart"></canvas>
-                </div>
             </div>
         </section>
     </div>
-    
-    <footer class="main-footer">
-        <strong>&copy; 2023 Your Company.</strong>
-        All rights reserved.
+    <!-- Main Footer -->
+    <!-- <footer class="main-footer">
+        <strong>2024 WHALE</strong>
+        All rights reserved. For Educational Purposes Only.
         <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 3.2.0
+            <b>Version</b> 1.0.0
         </div>
-    </footer>
-</div>
-
+    </footer> -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/js/adminlte.min.js"></script>
+
 <script>
     async function fetchData(url) {
         const response = await fetch(url);
