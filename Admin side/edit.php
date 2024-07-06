@@ -10,10 +10,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $rental_fee = isset($_POST['rental_fee']) ? $_POST['rental_fee'] : '';
         $hours = isset($_POST['hours']) ? $_POST['hours'] : '';
         $minutes = isset($_POST['minutes']) ? $_POST['minutes'] : '';
+        $actors = isset($_POST['actors']) ? $_POST['actors'] : '';
+        $desc = isset($_POST['desc']) ? $_POST['desc'] : '';
+
+        // Image upload handling
+        if (isset($_FILES['Image']) && $_FILES['Image']['error'] === UPLOAD_ERR_OK) {
+            $image = $_FILES['Image'];
+        } else {
+            echo '<div class="alert alert-danger">No file uploaded or invalid file.</div>';
+            exit; // Stop execution if file upload failed
+        }
 
         editVideo($video_id, $video_title, $genre, $release_date,
-            $num_videos_available, $video_format, $rental_fee, $hours, $minutes);
-        
+            $num_videos_available, $video_format, $rental_fee, $hours, $minutes, $actors, $desc, $image);
+
         echo '<div class="alert alert-success">Video updated successfully.</div>';
     } else {
         echo '<div class="alert alert-danger">No video ID specified.</div>';
@@ -28,7 +38,7 @@ if (isset($_GET['id'])) {
     <div class="card-header">
         <h3 class="card-title">Edit Video</h3>
     </div>
-    <form action="index.php?page=edit&id=<?php echo $video['video_id']; ?>" method="post">
+    <form action="index.php?page=edit&id=<?php echo $video['video_id']; ?>" method="post" enctype="multipart/form-data">
         <div class="card-body">
             <div class="form-group">
                 <label>Title</label>
@@ -55,6 +65,14 @@ if (isset($_GET['id'])) {
                 <input type="number" class="form-control" name="num_videos_available" value="<?php echo htmlspecialchars($video['num_videos_available']); ?>" required>
             </div>
             <div class="form-group">
+                <label for="actors">Actors</label>
+                <input type="text" class="form-control" name="actors" value="<?php echo htmlspecialchars($video['actors']); ?>" placeholder="Enter actors" required>
+            </div>
+            <div class="form-group">
+                <label for="desc">Description</label>
+                <textarea type="text" class="form-control" name="desc" rows="5" placeholder="Enter description" required><?php echo htmlspecialchars($video['description']); ?></textarea>
+            </div>
+            <div class="form-group">
                 <label for="video_format">Video Format</label><br>
                 <input type="radio" id="dvd" name="video_format" value="DVD" <?php if ($video['video_format'] === 'DVD') echo 'checked'; ?> required>
                 <label for="dvd">DVD</label><br>
@@ -71,12 +89,17 @@ if (isset($_GET['id'])) {
                 <label for="length">Length</label>
                 <div class="row">
                     <div class="col">
-                        <input type="number" class="form-control" name="hours" value="<?php echo floor($video['length'] / 3600); ?>" placeholder="Hours" min="0" required>
+                        <input type="number" class="form-control" name="hours" value="<?php echo floor($video['length'] / 3600); ?>" placeholder="Hours" required>
                     </div>
                     <div class="col">
-                        <input type="number" class="form-control" name="minutes" value="<?php echo floor(($video['length'] % 3600) / 60); ?>" placeholder="Minutes" min="0" max="59" required>
+                        <input type="number" class="form-control" name="minutes" value="<?php echo floor(($video['length'] % 3600) / 60); ?>" placeholder="Minutes" required>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="Image">Cover Image</label>
+                <input type="file" class="form-control-file" name="Image" accept="image/*">
+                <small class="form-text text-muted">Upload a cover image for the video.</small>
             </div>
         </div>
         <div class="card-footer">

@@ -1,21 +1,57 @@
 <?php
-require_once 'addVideo_db.php'; // Include your database connection file
+require_once 'addVideo_db.php'; 
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $price, $hours, $minutes) {
+function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $price, $hours, $minutes, $actors, $desc, $image) {
     global $conn;
 
-    $total_length = $hours * 3600 + $minutes * 60;
+    // Handle image upload
+    if (!isset($image) || !isset($image['tmp_name']) || empty($image['tmp_name'])) {
+        echo "No file uploaded or invalid file.";
+        return;
+    }
 
     
-    $stmt = $conn->prepare("INSERT INTO videos (video_title, genre, release_date, num_videos_available, video_format, rental_fee, length)
-                            VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssiissi", $title, $genre, $release_year, $numCopies, $videoformat, $price, $total_length);
+    $targetDir = "uploads/";
 
     
+    if (!file_exists($targetDir) && !is_dir($targetDir)) {
+        mkdir($targetDir, 0755, true); 
+    }
+
+    $targetFile = $targetDir . basename($image['name']);
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    
+    $check = getimagesize($image['tmp_name']);
+    if ($check === false) {
+        echo "File is not an image.";
+        return;
+    }
+
+    
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        return;
+    }
+
+    // Upload file
+    if (!move_uploaded_file($image['tmp_name'], $targetFile)) {
+        echo "Sorry, there was an error uploading your file.";
+        return;
+    }
+
+    
+    $length = $hours . ':' . $minutes;
+
+    
+    $stmt = $conn->prepare("INSERT INTO videos (video_title, genre, release_date, num_videos_available, video_format, rental_fee, length, Image, actors, description)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiissssss", $title, $genre, $release_year, $numCopies, $videoformat, $price, $length, $targetFile, $actors, $desc);
+
     if ($stmt->execute()) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                 Video added successfully.
@@ -27,7 +63,6 @@ function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $pric
         echo "Error: " . $stmt->error;
     }
 
-    
     $stmt->close();
 }
 
@@ -63,18 +98,54 @@ function getVideoById($id) {
     }
 }
 
-function editVideo($id, $title, $genre, $release_year, $numCopies, $videoformat, $price, $hours, $minutes) {
+function editVideo($id, $title, $genre, $release_year, $numCopies, $videoformat, $price, $hours, $minutes, $actors, $desc, $image) {
     global $conn;
 
-    
     $total_length = $hours * 3600 + $minutes * 60;
 
-    
-    $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, num_videos_available = ?, 
-                            video_format = ?, rental_fee = ?, length = ? WHERE video_id = ?");
-    $stmt->bind_param("ssiissii", $title, $genre, $release_year, $numCopies, $videoformat, $price, $total_length, $id);
+    // Handle image upload
+    if (!empty($image['name'])) {
+        // Directory where images will be stored
+        $targetDir = "uploads/";
 
-    
+        // Create the directory if it doesn't exist
+        if (!file_exists($targetDir) && !is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true); // Create uploads directory with full permissions
+        }
+
+        $targetFile = $targetDir . basename($image['name']);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        // Check if image file is a valid image
+        $check = getimagesize($image['tmp_name']);
+        if ($check === false) {
+            echo "File is not an image.";
+            return false;
+        }
+
+        // Allow certain file formats
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            return false;
+        }
+
+        // Upload file
+        if (!move_uploaded_file($image['tmp_name'], $targetFile)) {
+            echo "Sorry, there was an error uploading your file.";
+            return false;
+        }
+
+        // Update database with new image path
+        $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, num_videos_available = ?, 
+                                video_format = ?, rental_fee = ?, length = ?, actors = ?, description = ?, Image = ? WHERE video_id = ?");
+        $stmt->bind_param("ssiissssssi", $title, $genre, $release_year, $numCopies, $videoformat, $price, $total_length, $actors, $desc, $targetFile, $id);
+    } else {
+        // Update database without changing image
+        $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, num_videos_available = ?, 
+                                video_format = ?, rental_fee = ?, length = ?, actors = ?, description = ? WHERE video_id = ?");
+        $stmt->bind_param("ssiisssssi", $title, $genre, $release_year, $numCopies, $videoformat, $price, $total_length, $actors, $desc, $id);
+    }
+
     if ($stmt->execute()) {
         return true;
     } else {
@@ -83,14 +154,13 @@ function editVideo($id, $title, $genre, $release_year, $numCopies, $videoformat,
     }
 }
 
+
 function deleteVideo($id) {
     global $conn;
 
-    
     $stmt = $conn->prepare("DELETE FROM videos WHERE video_id = ?");
     $stmt->bind_param("i", $id);
 
-    
     if ($stmt->execute()) {
         return true;
     } else {

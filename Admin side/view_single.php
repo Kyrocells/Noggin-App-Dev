@@ -13,10 +13,11 @@ if (isset($_GET['id'])) {
         <h3 class="card-title">Video Details</h3>
     </div>
     <div class="card-body">
-        <p><strong>Title:</strong> <?php echo htmlspecialchars($video['title']); ?></p>
-        <p><strong>Director:</strong> <?php echo htmlspecialchars($video['director']); ?></p>
-        <p><strong>Release Year:</strong> <?php echo htmlspecialchars($video['release_year']); ?></p>
-        <p><strong>Copies available:</strong> <?php echo htmlspecialchars($video['numCopies']); ?></p>
+        <p><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
+        <p><strong>Genre:</strong> <?php echo htmlspecialchars($video['genre']); ?></p>
+        <p><strong>Release Year:</strong> <?php echo htmlspecialchars($video['release_date']); ?></p>
+        <p><strong>Copies available:</strong> <?php echo htmlspecialchars($video['num_videos_available']); ?></p>
+        <p><strong>Description:</strong> <?php echo htmlspecialchars($video['description']); ?></p>
     </div>
     <div class="card-footer">
         <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
@@ -31,3 +32,4 @@ if (isset($_GET['id'])) {
 }
 ?>
 
+<!-- Customer side View -->

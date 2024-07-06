@@ -1,13 +1,20 @@
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
     require_once 'functions.php';
 
-    
-    $total_length = $_POST['hours'] * 3600 + $_POST['minutes'] * 60;
 
-    addVideo($_POST['title'], $_POST['genre'], $_POST['release_year'], $_POST['numCopies'], $_POST['video_format'], $_POST['price'], $_POST['hours'], $_POST['minutes']);
+    // Check if file was uploaded successfully
+    if (isset($_FILES['Image']) && $_FILES['Image']['error'] === UPLOAD_ERR_OK) {
+        $image = $_FILES['Image'];
+    } else {
+        // Handle case where no file was uploaded or there was an error
+        echo "No file uploaded or invalid file.";
+        // You might want to handle this error more gracefully, depending on your application logic
+        exit; // Stop execution if file upload failed
+    }
+
+    // Call addVideo function with all parameters
+    addVideo($_POST['title'], $_POST['genre'], $_POST['release_year'], $_POST['numCopies'], $_POST['video_format'], $_POST['price'], $_POST['hours'], $_POST['minutes'], $_POST['actors'],$_POST['desc'],$image);
 }
 ?>
 
@@ -43,6 +50,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="number" class="form-control" name="numCopies" placeholder="Enter Copies available" required>
             </div>
             <div class="form-group">
+                <label for="actors">Actors</label>
+                <input type="text" class="form-control" name="actors" placeholder="Enter actors" required>
+            </div>
+            <div class="form-group">
+                <label for="desc">Description</label>
+                <textarea type="text" class="form-control" name="desc"  rows="5" placeholder="Enter description" required></textarea>
+            </div>
+            <div class="form-group">
                 <label for="video_format">Video Format</label><br>
                 <input type="radio" id="dvd" name="video_format" value="DVD" required>
                 <label for="dvd">DVD</label><br>
@@ -59,19 +74,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="length">Length</label>
                 <div class="row">
                     <div class="col">
-                        <input type="number" class="form-control" name="hours" placeholder="Hours" min="0" required>
+                        <input type="text" class="form-control" name="hours" placeholder="Hours" required>
                     </div>
                     <div class="col">
-                        <input type="number" class="form-control" name="minutes" placeholder="Minutes" min="0" max="59" required>
+                        <input type="text" class="form-control" name="minutes" placeholder="Minutes" required>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="Image">Cover Image</label>
+                <input type="file" class="form-control-file" name="Image" accept="image/*" required>
+                <small class="form-text text-muted">Upload a cover image for the video.</small>
             </div>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Add Video</button>
         </div>
     </form>
-    <script>
+</div>
+<script>
     async function fetchData(url) {
         const response = await fetch(url);
         return response.json();
@@ -102,4 +123,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     window.onload = init;
 </script>
-</div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2024 at 11:30 AM
+-- Generation Time: Jul 06, 2024 at 10:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -77,21 +77,23 @@ CREATE TABLE `users` (
 CREATE TABLE `videos` (
   `video_id` int(11) NOT NULL,
   `video_title` varchar(100) NOT NULL,
+  `actors` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
   `genre` varchar(50) DEFAULT NULL,
   `video_format` varchar(50) DEFAULT NULL,
   `release_date` varchar(11) DEFAULT NULL,
   `rental_fee` decimal(10,2) DEFAULT NULL,
   `num_videos_available` int(11) DEFAULT NULL,
-  `length` int(11) NOT NULL
+  `length` varchar(255) NOT NULL,
+  `Image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `videos`
 --
 
-INSERT INTO `videos` (`video_id`, `video_title`, `genre`, `video_format`, `release_date`, `rental_fee`, `num_videos_available`, `length`) VALUES
-(7, 'Kung fu', 'Action', 'DVD', '2012', 1111.00, 10, 4320),
-(8, 'John wick', 'Action', 'Digital', '2021', 120.00, 10, 4500);
+INSERT INTO `videos` (`video_id`, `video_title`, `actors`, `description`, `genre`, `video_format`, `release_date`, `rental_fee`, `num_videos_available`, `length`, `Image`) VALUES
+(10, 'Regular Show 2', 'Rigby, Mordecai,Skips', 'an animated series about a six-foot-tall blue jay named Mordecai and a hyperactive raccoon named Rigby ', 'Action', 'Blu-ray', '2020', 20.00, 5, '7920', 'uploads/Screenshot 2024-03-05 135209.png');
 
 --
 -- Indexes for dumped tables
@@ -153,7 +155,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `video_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `video_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
