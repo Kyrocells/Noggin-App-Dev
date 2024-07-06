@@ -8,8 +8,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Update the SQL query to select the video_title
-$sql = "SELECT image, genre, video_title FROM videos ORDER BY genre";
+// Update the SQL query to select the necessary fields
+$sql = "SELECT video_id, image, genre, video_title, release_date, length, rental_fee FROM videos ORDER BY genre";
 $result = $conn->query($sql);
 
 $movies_by_genre = array();
@@ -17,13 +17,24 @@ $movies_by_genre = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $genre = $row['genre'];
+        $video_id = $row['video_id'];
         $image = $row['image'];
         $video_title = $row['video_title'];
+        $release_year = $row['release_date'];
+        $duration = $row['length'];
+        $price = $row['rental_fee'];
 
         if (!isset($movies_by_genre[$genre])) {
             $movies_by_genre[$genre] = array();
         }
-        $movies_by_genre[$genre][] = array('image' => $image, 'video_title' => $video_title);
+        $movies_by_genre[$genre][] = array(
+            'video_id' => $video_id,
+            'image' => $image,
+            'video_title' => $video_title,
+            'release_date' => $release_year,
+            'length' => $duration,
+            'rental_fee' => $price
+        );
     }
 }
 
@@ -73,10 +84,11 @@ $conn->close();
                     echo '<h5 class="card-title">' . $movie['video_title'] . '</h5>';
                     echo '</div>';
                     echo '<div class="additional-content">';
-                    echo '<a href="#" class="movie_card_button mb-2">View</a>';
-                    echo '<a href="#" class="movie_card_button">Rent</a>';
+                    echo '<a href="index.php?page=single_view&video_id=' . $movie['video_id'] . '" class="movie_card_button mb-2">View</a>';
+                    echo '<a href="index.php?page=rent_payment&video_id=' . $movie['video_id'] . '"class="movie_card_button">Rent</a>';
                     echo '</div></div>';
                 }
+                
                 
                 echo '</div></div>'; 
             }
@@ -121,3 +133,4 @@ $conn->close();
         });
     });
 </script>
+
