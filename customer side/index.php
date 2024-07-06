@@ -25,9 +25,6 @@
                     case 'rent_history':
                         include 'rent_history.php';
                         break;
-                    case 'return':
-                        include 'return.php';
-                        break;
                     case 'notifications':
                         include 'notifications.php';
                         break;
