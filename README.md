@@ -13,3 +13,9 @@ menu.php = will fix current button
 wala pang return page or something
 
 will fix design
+
+admin side:
+
+transactions.php
+
+reports.php
