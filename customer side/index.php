@@ -25,8 +25,14 @@
                     case 'rent_history':
                         include 'rent_history.php';
                         break;
+                    case 'rent_payment':
+                        include 'rent_payment.php';
+                        break;
                     case 'notifications':
                         include 'notifications.php';
+                        break;
+                    case 'single_view':
+                        include 'single_view.php';
                         break;
                     case 'profile':
                         include 'profile.php';
