@@ -126,7 +126,7 @@ hr {
     }
 
 /* rent */
-.movie_container, html {
+.movie_container, .rent_history_container, html {
     margin: 0;
     padding: 0;
 }
@@ -248,7 +248,7 @@ hr {
     flex-direction: row;
     align-items: center;
 }
-.search_button, .filter_button, .confirm_button{
+.search_button, .filter_button, .confirm_button, .rent_button, .back_button{
     background-color: #1E5162;
     color: #fff;
     font-weight: 500;
@@ -263,7 +263,7 @@ hr {
     justify-content: center;
     align-items: center;
 }
-.search_button:hover, .filter_button:hover, .confirm_button:hover{
+.search_button:hover, .filter_button:hover, .confirm_button:hover, .rent_button:hover, .back_button:hover{
     color: #fff;
     background-color: #13333d;
     font-weight: 500;
@@ -303,3 +303,17 @@ p{
     font-weight: 500;
 }
 
+/* rent_history */
+
+/* video single details */
+.video_details{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+}
+
+.video_title{
+    font-size: 24px;
+    margin-left: 20px;
+    font-weight: 700;
+}
