@@ -149,7 +149,7 @@
                 <!-- Phone Number -->
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="text" id="phone" name="phone" class="form-control" required>
+                    <input type="text" id="phone" name="phone" class="form-control" pattern="[0-9]{11}" required>
                 </div>
                 <!-- address -->
                 <div class="form-group">
