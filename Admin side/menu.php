@@ -21,7 +21,7 @@
             </a>
             <a href="index.php?page=add" class="list-group-item list-group-item-action not_active">Add Video</a>
             <a href="index.php?page=#" class="list-group-item list-group-item-action not_active">Transactions</a><!--change # to page name ONLY without filetype-->
-            <a href="index.php?page=#" class="list-group-item list-group-item-action not_active">Reports</a><!--change # to page name ONLY without filetype-->
+            <a href="index.php?page=reports" class="list-group-item list-group-item-action not_active">Reports</a><!--change # to page name ONLY without filetype-->
             <a href="index.php?page=" class="list-group-item list-group-item-action not_active">Logout</a> <!--idk pano sa logout-->
         </div>
     </div>

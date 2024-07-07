@@ -44,9 +44,9 @@ require 'functions.php';
                     //     include 'transactions.php';
                     //     break;
                     //uncomment if available na
-                    // case 'reports':
-                    //     include 'reports.php';
-                    //     break;
+                     case 'reports':
+                        include 'reports.php';
+                        break;
                     default:
                         include 'view.php';
                         break;
@@ -63,40 +63,5 @@ require 'functions.php';
             <b>Version</b> 1.0.0
         </div>
     </footer> -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script>
-    async function fetchData(url) {
-        const response = await fetch(url);
-        return response.json();
-    }
-
-    async function init() {
-        const videoData = await fetchData('http://localhost/TW21/Project/videos_data.php'); // Update with the correct path
-        const doughnutConfig = {
-            type: 'doughnut',
-            data: {
-                labels: videoData.map(item => item.video_title),
-                datasets: [{
-                    data: videoData.map(item => item.num_videos_available),
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(75, 192, 192)',
-                        'rgb(255, 205, 86)',
-                        'rgb(201, 203, 207)',
-                        'rgb(54, 162, 235)'
-                    ]
-                }]
-            }
-        };
-
-        const ctx1 = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx1, doughnutConfig);
-    }
-
-    window.onload = init;
-</script>
 </body>
 </html>

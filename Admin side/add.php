@@ -102,6 +102,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     async function fetchData(url) {
         const response = await fetch(url);
@@ -109,26 +112,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     async function init() {
-        const videoData = await fetchData('http://localhost/TW21/Project/videos_data.php'); // Update with the correct path
-        const doughnutConfig = {
-            type: 'doughnut',
-            data: {
-                labels: videoData.map(item => item.Title),
-                datasets: [{
-                    data: videoData.map(item => item.Copies),
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(75, 192, 192)',
-                        'rgb(255, 205, 86)',
-                        'rgb(201, 203, 207)',
-                        'rgb(54, 162, 235)'
-                    ]
-                }]
-            }
-        };
+        try {
+            const videoData = await fetchData('http://localhost/TW21/FinalProject/videos_data.php'); // Update with the correct path
 
-        const ctx1 = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx1, doughnutConfig);
+            const doughnutConfig = {
+                type: 'line',
+                data: {
+                    labels: videoData.map(item => item.video_title),
+                    datasets: [{
+                        label: 'Number of Videos Available',
+                        data: videoData.map(item => item.num_videos_available),
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, doughnutConfig);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
 
     window.onload = init;
