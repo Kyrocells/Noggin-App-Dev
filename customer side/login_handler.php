@@ -19,7 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['email'] = $user['email'];
 
-        header('Location: index.php');
+        if ($user['admin_rights'] == 1) {
+            header('Location: ../admin/index.php');
+        } else {
+            header('Location: customer/index.php');
+        }
         exit();
     } else {
         // Invalid login
