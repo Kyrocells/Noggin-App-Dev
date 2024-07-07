@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2024 at 03:26 PM
+-- Generation Time: Jul 07, 2024 at 07:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,15 +43,19 @@ CREATE TABLE `rented_videos` (
 --
 
 INSERT INTO `rented_videos` (`rental_id`, `video_id`, `user_id`, `renter_name`, `start_date`, `return_date`, `returned`, `video_format`) VALUES
-(45, 24, 8, 'kyle de castro', '2024-07-07', '2024-07-07', 1, 'Blu-ray'),
-(46, 24, 8, 'kyle de castro', '2024-07-07', '2024-07-07', 1, 'Blu-ray'),
-(47, 24, 8, 'kyle de castro', '2024-07-07', '2024-07-08', 0, 'DVD'),
-(48, 24, 8, 'kyle de castro', '2024-07-07', '2024-07-08', 0, 'Blu-ray'),
-(49, 24, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
-(50, 24, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'Digital'),
-(51, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
-(52, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'Blu-ray'),
-(53, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD');
+(65, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
+(66, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
+(67, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
+(68, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-08', 1, 'DVD'),
+(69, 24, 9, 'Kelsey Myle Rivera', '2024-07-08', '2024-07-08', 1, 'Digital'),
+(70, 25, 9, 'Kelsey Myle Rivera', '2024-07-08', '2024-07-09', 1, 'Digital'),
+(71, 25, 9, 'Kelsey Myle Rivera', '2024-07-09', '2024-07-12', 1, 'DVD'),
+(72, 25, 9, 'Kelsey Myle Rivera', '2024-07-12', '2024-07-16', 1, 'Blu-ray'),
+(73, 25, 9, 'Kelsey Myle Rivera', '2024-07-16', '2024-07-19', 1, 'DVD'),
+(74, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
+(75, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
+(76, 24, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD'),
+(77, 25, 9, 'Kelsey Myle Rivera', '2024-07-07', '2024-07-07', 1, 'DVD');
 
 -- --------------------------------------------------------
 
@@ -62,9 +66,10 @@ INSERT INTO `rented_videos` (`rental_id`, `video_id`, `user_id`, `renter_name`, 
 CREATE TABLE `transaction_history` (
   `transaction_id` int(11) NOT NULL,
   `date` date DEFAULT NULL,
+  `rental_id` int(11) NOT NULL,
+  `video_id` int(11) DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `video_id` int(11) DEFAULT NULL,
   `method_of_payment` varchar(50) DEFAULT NULL,
   `video_format` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -73,16 +78,20 @@ CREATE TABLE `transaction_history` (
 -- Dumping data for table `transaction_history`
 --
 
-INSERT INTO `transaction_history` (`transaction_id`, `date`, `total_price`, `user_id`, `video_id`, `method_of_payment`, `video_format`) VALUES
-(41, '2024-07-07', 1500.00, 8, 24, 'Gcash', 'Blu-ray'),
-(42, '2024-07-07', 1500.00, 8, 24, 'Gcash', 'Blu-ray'),
-(43, '2024-07-07', 1300.00, 8, 24, 'Gcash', 'DVD'),
-(44, '2024-07-07', 1500.00, 8, 24, '', 'Blu-ray'),
-(45, '2024-07-07', 1300.00, 9, 24, 'Gcash', 'DVD'),
-(46, '2024-07-07', 1250.00, 9, 24, 'Gcash', 'Digital'),
-(47, '2024-07-07', 305.00, 9, 25, 'Gcash', 'DVD'),
-(48, '2024-07-07', 505.00, 9, 25, 'Gcash', 'Blu-ray'),
-(49, '2024-07-07', 305.00, 9, 25, 'Gcash', 'DVD');
+INSERT INTO `transaction_history` (`transaction_id`, `date`, `rental_id`, `video_id`, `total_price`, `user_id`, `method_of_payment`, `video_format`) VALUES
+(61, '2024-07-07', 65, 25, 310.00, 9, 'Gcash', 'DVD'),
+(62, '2024-07-07', 66, 25, 310.00, 9, 'Gcash', 'DVD'),
+(63, '2024-07-07', 67, 25, 310.00, 9, 'Gcash', 'DVD'),
+(64, '2024-07-07', 68, 25, 305.00, 9, 'Gcash', 'DVD'),
+(65, '2024-07-08', 69, 24, 1250.00, 9, 'Gcash', 'Digital'),
+(66, '2024-07-07', 70, 25, 255.00, 9, 'Gcash', 'Digital'),
+(67, '2024-07-09', 71, 25, 605.00, 9, 'Gcash', 'DVD'),
+(68, '2024-07-12', 72, 25, 805.00, 9, 'Gcash', 'Blu-ray'),
+(69, '2024-07-16', 73, 25, 605.00, 9, 'Gcash', 'DVD'),
+(70, '2024-07-07', 74, 25, 305.00, 9, 'Gcash', 'DVD'),
+(71, '2024-07-07', 75, 25, 310.00, 9, 'Gcash', 'DVD'),
+(72, '2024-07-07', 76, 24, 1300.00, 9, 'Gcash', 'DVD'),
+(73, '2024-07-07', 77, 25, 310.00, 9, 'Gcash', 'DVD');
 
 -- --------------------------------------------------------
 
@@ -140,7 +149,7 @@ CREATE TABLE `videos` (
 
 INSERT INTO `videos` (`video_id`, `video_title`, `actors`, `description`, `genre`, `release_date`, `rental_fee`, `length`, `num_videos_available`, `dvd_stocks`, `bray_stocks`, `digital`, `Image`) VALUES
 (24, 'Kyro Dudels', 'Kyro', 'asdasdasdsa', 'Comedy', '2024', 1000.00, '1:30', 18, 9, 9, 1, '../img/NO WTRRECEIPT 2nD OWNER (12).png'),
-(25, 'asdsad', 'Me Myself and I', '232qweqw', 'Action', '2323', 5.00, '1:32', 10, 5, 5, 1, '../img/PLANS page for employer.png');
+(25, 'asdsad', 'Me Myself and I', '232qweqw', 'Action', '2323', 5.00, '1:32', 7, 2, 5, 1, '../img/PLANS page for employer.png');
 
 --
 -- Indexes for dumped tables
@@ -160,7 +169,8 @@ ALTER TABLE `rented_videos`
 ALTER TABLE `transaction_history`
   ADD PRIMARY KEY (`transaction_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `video_id` (`video_id`);
+  ADD KEY `video_id` (`video_id`),
+  ADD KEY `fk_rental_id` (`rental_id`);
 
 --
 -- Indexes for table `users`
@@ -184,13 +194,13 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `rented_videos`
 --
 ALTER TABLE `rented_videos`
-  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `transaction_history`
 --
 ALTER TABLE `transaction_history`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -219,6 +229,7 @@ ALTER TABLE `rented_videos`
 -- Constraints for table `transaction_history`
 --
 ALTER TABLE `transaction_history`
+  ADD CONSTRAINT `fk_rental_id` FOREIGN KEY (`rental_id`) REFERENCES `rented_videos` (`rental_id`),
   ADD CONSTRAINT `transaction_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `transaction_history_ibfk_2` FOREIGN KEY (`video_id`) REFERENCES `videos` (`video_id`);
 COMMIT;
