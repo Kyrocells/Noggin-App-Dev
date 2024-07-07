@@ -14,79 +14,79 @@ $start_date = date('Y-m-d');
 ?>
 
 <div class="container rent_payment_container">
-<div class="card col-md-6 rent_payment">
-    <div class="card-header video_details">
-        <p class="card-title video_title rent_payment_title">You are renting</p>
-        <a href="index.php?page=rent"><button type="button" class="back_button">Back</button></a>
-    </div>
-    <div class="card-body">
-        <p class="rent_payment_title"><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
-        <p class="rent_payment_title"><strong>Price per day:</strong> <?php echo htmlspecialchars($video['rental_fee']); ?></p>
-        
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item rent-list-group-item">
-                <div class="list-button gap-2 mt-2 mb-4">
-                    <button type="button" id="gcashbutton" class="mod_button default-button" onclick="method('Gcash')">Gcash</button>
-                    <button type="button" id="cardbutton" class="mod_button" onclick="method('Card')">Card</button>
-                </div>
+    <div class="card col-md-6 rent_payment">
+        <div class="card-header video_details">
+            <p class="card-title video_title rent_payment_title">You are renting</p>
+            <a href="index.php?page=rent"><button type="button" class="back_button">Back</button></a>
+        </div>
+        <div class="card-body">
+            <p class="rent_payment_title"><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
+            <p class="rent_payment_title"><strong>Price per day:</strong> <?php echo htmlspecialchars($video['rental_fee']); ?></p>
+            
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item rent-list-group-item">
+                    <div class="list-button gap-2 mt-2 mb-4">
+                        <button type="button" id="gcashbutton" class="mod_button default-button" onclick="method('Gcash')">Gcash</button>
+                        <button type="button" id="cardbutton" class="mod_button" onclick="method('Card')">Card</button>
+                    </div>
 
-                <form class="needs-validation" id="form-element" novalidate action="process_payment.php" method="post">
-                    <div id="card-input" style="display: none;">
+                    <form class="needs-validation" id="form-element" novalidate action="process_payment.php" method="post">
+                        <div id="card-input" style="display: none;">
+                            <div class="mb-3">
+                                <label for="cardNumber" class="form-label">Card Details:</label>
+                                <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" maxlength="19" pattern="\d{4} \d{4} \d{4} \d{4}" oninput="validation1(this)" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/YY" aria-label="MM/YY" maxlength="5" pattern="\d{2}/\d{2}" oninput="validation2(this)" required>
+                                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" maxlength="3" oninput="validation3(this)" required>
+                            </div>
+                        </div>
+
                         <div class="mb-3">
-                            <label for="cardNumber" class="form-label">Card Details:</label>
-                            <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" maxlength="19" pattern="\d{4} \d{4} \d{4} \d{4}" oninput="validation1(this)" required>
+                            <label for="email" class="form-label">Billing Information:</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email to get a receipt" required>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/YY" aria-label="MM/YY" maxlength="5" pattern="\d{2}/\d{2}" oninput="validation2(this)" required>
-                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" maxlength="3" oninput="validation3(this)" required>
+
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date:</label>
+                            <input type="date" class="form-control" id="startDate" name="start_date" value="<?php echo $start_date; ?>" readonly>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Billing Information:</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email to get a receipt" required>
-                    </div>
+                        <div class="mb-3">
+                            <label for="returnDate" class="form-label">Return Date:</label>
+                            <input type="date" class="form-control" id="returnDate" name="return_date" required oninput="calculateTotalPrice()">
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="startDate" class="form-label">Start Date:</label>
-                        <input type="date" class="form-control" id="startDate" name="start_date" value="<?php echo $start_date; ?>" readonly>
-                    </div>
+                        <div class="mb-3">
+                            <label for="videoFormat" class="form-label">Video Format:</label>
+                            <select class="form-control" id="videoFormat" name="video_format" required onchange="calculateTotalPrice()">
+                                <?php if ($video['dvd_stocks'] > 0): ?>
+                                    <option value="DVD" data-extra-fee="300">DVD</option>
+                                <?php endif; ?>
+                                <?php if ($video['bray_stocks'] > 0): ?>
+                                    <option value="Blu-ray" data-extra-fee="500">Blu-ray</option>
+                                <?php endif; ?>
+                                <?php if ($video['digital'] == 1): ?>
+                                    <option value="Digital" data-extra-fee="250">Digital</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="returnDate" class="form-label">Return Date:</label>
-                        <input type="date" class="form-control" id="returnDate" name="return_date" required oninput="calculateTotalPrice()">
-                    </div>
+                        <div class="mb-3">
+                            <label for="totalPrice" class="form-label">Total Price:</label>
+                            <input type="text" class="form-control" id="totalPrice" name="total_price" readonly>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="videoFormat" class="form-label">Video Format:</label>
-                        <select class="form-control" id="videoFormat" name="video_format" required onchange="calculateTotalPrice()">
-                            <?php if ($video['dvd_stocks'] > 0): ?>
-                                <option value="DVD" data-extra-fee="300">DVD</option>
-                            <?php endif; ?>
-                            <?php if ($video['bray_stocks'] > 0): ?>
-                                <option value="Blu-ray" data-extra-fee="500">Blu-ray</option>
-                            <?php endif; ?>
-                            <?php if ($video['digital'] == 1): ?>
-                                <option value="Digital" data-extra-fee="250">Digital</option>
-                            <?php endif; ?>
-                        </select>
-                    </div>
+                        <input type="hidden" name="video_id" value="<?php echo $video_id; ?>">
+                        <input type="hidden" id="rentalFee" value="<?php echo htmlspecialchars($video['rental_fee']); ?>">
+                        <input type="hidden" name="payment_method" id="paymentMethod">
 
-                    <div class="mb-3">
-                        <label for="totalPrice" class="form-label">Total Price:</label>
-                        <input type="text" class="form-control" id="totalPrice" name="total_price" readonly>
-                    </div>
-
-                    <input type="hidden" name="video_id" value="<?php echo $video_id; ?>">
-                    <input type="hidden" id="rentalFee" value="<?php echo htmlspecialchars($video['rental_fee']); ?>">
-                    <input type="hidden" name="payment_method" id="paymentMethod">
-
-                    <button type="button" class="btn confirm_payment_button my-4" id="confirmPaymentBtn">Confirm Payment</button>
-                </form>
-            </li>
-        </ul>
+                        <button type="button" class="btn confirm_payment_button my-4" id="confirmPaymentBtn">Confirm Payment</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 
 <!-- confirm -->
@@ -149,7 +149,12 @@ $start_date = date('Y-m-d');
         if (returnDate >= startDate) {
             const timeDiff = returnDate - startDate;
             const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-            const totalPrice = days * rentalFee + extraFee;
+            let totalPrice;
+            if (days === 0) {
+                totalPrice = rentalFee + extraFee;
+            } else {
+                totalPrice = days * rentalFee + extraFee;
+            }
             document.getElementById('totalPrice').value = totalPrice.toFixed(2);
         } else {
             document.getElementById('totalPrice').value = '';
@@ -161,7 +166,7 @@ $start_date = date('Y-m-d');
 
         var form = document.getElementById('form-element');
         if (form.checkValidity()) {
-            // pag valid form saka lang mag appear si modal
+            // Only show modal if the form is valid
             var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
             paymentModal.show();
         } else {
