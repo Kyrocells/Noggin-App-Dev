@@ -24,9 +24,6 @@ $start_date = date('Y-m-d');
         <p class="rent_payment_title"><strong>Price per day:</strong> <?php echo htmlspecialchars($video['rental_fee']); ?></p>
         
         <ul class="list-group list-group-flush">
-            <!-- <li class="list-group-item rent-list-group-item mt-3">
-                <h3>Payment Method:</h3>
-            </li> -->
             <li class="list-group-item rent-list-group-item">
                 <div class="list-button gap-2 mt-2 mb-4">
                     <button type="button" id="gcashbutton" class="mod_button default-button" onclick="method('Gcash')">Gcash</button>
@@ -84,12 +81,28 @@ $start_date = date('Y-m-d');
                     <input type="hidden" id="rentalFee" value="<?php echo htmlspecialchars($video['rental_fee']); ?>">
                     <input type="hidden" name="payment_method" id="paymentMethod">
 
-                    <button type="submit" class="btn confirm_payment_button my-4" id="confirmPaymentBtn">Confirm Payment</button>
+                    <!-- Change button type to 'button' to prevent default form submission -->
+                    <button type="button" class="btn confirm_payment_button my-4" id="confirmPaymentBtn">Confirm Payment</button>
                 </form>
             </li>
         </ul>
     </div>
 </div>
+</div>
+
+<!-- confirm -->
+<div class="modal fade pop_up_confirmation_modal" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content pop_up_confirmation">
+            <div class="modal-header">
+                <h5 class="modal-title modal_text" id="paymentModalLabel">Payment Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modal_text">
+                <p class="modal-body modal_text">Your payment has been processed successfully.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -141,28 +154,16 @@ $start_date = date('Y-m-d');
         }
     }
 
-    document.getElementById('form-element').addEventListener('submit', function (event) {
+    document.getElementById('confirmPaymentBtn').addEventListener('click', function (event) {
         event.preventDefault();
-
-        if (this.checkValidity()) {
-            this.submit();
-        } else {
-            this.classList.add('was-validated');
-        }
+        var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+        paymentModal.show();
     });
 
-    function validation1(input) {
-        var formatted = input.value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ');
-        input.value = formatted.trim();
-    }
-
-    function validation2(input) {
-        var formatted = input.value.replace(/\D/g, '').replace(/(\d{2})(\d{2})/, '$1/$2');
-        input.value = formatted.trim();
-    }
-
-    function validation3(input) {
-        var formatted = input.value.replace(/\D/g, '');
-        input.value = formatted.trim();
-    }
+    document.getElementById('paymentModal').addEventListener('click', function(event) {
+        if (event.target === document.getElementById('paymentModal')) {
+            var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            paymentModal.hide();
+        }
+    });
 </script>

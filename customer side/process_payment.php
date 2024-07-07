@@ -1,4 +1,11 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 require_once 'functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -71,6 +78,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
 
         $conn->commit();
+
+        // Send confirmation email
+        $subject = 'Payment Confirmation';
+        $message = "Dear $renter_name,\n\nThank you for your payment. Here are the details:\n\nVideo Title: {$video['video_title']}\nTotal Price: $price\nPayment Method: $payment_method\n\nStart Date: $start_date\nReturn Date: $return_date\n\nThank you for choosing our service!\n\nBest regards,\nVideo Rental Service";
+
+        $mail = new PHPMailer(true);
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'whale3871@gmail.com'; // Your Gmail address
+            $mail->Password = 'almizdofpkezpkgs'; // Your Gmail app password
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            // Recipients
+            $mail->setFrom('your_email@gmail.com', 'Video Rental Service');
+            $mail->addAddress($email, $renter_name);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = nl2br($message);
+            $mail->AltBody = $message;
+
+            $mail->send();
+            echo 'Email has been sent';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
 
         // Redirect to a success page
         header('Location: index.php?page=rent_payment_success');
