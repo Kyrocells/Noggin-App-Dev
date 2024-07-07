@@ -69,7 +69,7 @@ $conn->close();
                 <p class="no_videos"><strong>No videos available.</strong></p>
             <?php else: ?>
                 <?php foreach ($rented_videos as $video): ?>
-                    <div class="card movie_card">
+                    <div class="card movie_card mb-4">
                         <img src="<?php echo htmlspecialchars($video['image']); ?>" class="card-img-top movie_img" alt="movie picture">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($video['video_title']); ?></h5>
