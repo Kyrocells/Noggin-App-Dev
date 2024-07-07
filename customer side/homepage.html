@@ -18,9 +18,31 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #338BA8, #ADD8E6);
-    background-repeat: no-repeat; 
-    background-size: cover;
+    background: linear-gradient(
+        45deg,
+        #59bcdd,
+        #4ca6c4,
+        #3f8faa,
+        #b9dae6,
+        #2d7188,
+        #3f8faa,
+        #4ca6c4,
+        #59bcdd
+    );
+    background-size: 400% 400%; /* Adjusted for a larger area to create a seamless loop */
+    animation: gradientAnimation 5s ease infinite; /* Longer animation duration for smoother transition */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 ::selection {
