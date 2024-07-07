@@ -59,7 +59,7 @@
             width: 100%;
             padding: 10px;
             border: none;
-            border-radius: 20px;
+            border-radius: 10px;
             box-sizing: border-box;
             background-color: #ffffff;
             font-size: 16px;
@@ -79,16 +79,27 @@
             padding: 15px;
             display: block;
             margin: 0 auto;
-            background-color: #1e81b0;
+            background-color: #1E5162;
             border: none;
             color: #ffffff;
-            border-radius: 20px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 18px;
             transition: background-color 0.3s ease;
         }
         .form-group .submit-btn:hover {
-            background-color: #166d90;
+            color: #fff;
+            background-color: #13333d;
+            font-weight: 500;
+        }
+
+        .register-link a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -149,6 +160,10 @@
                 <input type="submit" class="submit-btn" value="Register">
             </div>
         </form>
+        <!-- Login Link -->
+        <div class="register-link text-center mt-4">
+            <p>Already have an account? <a href="login.php">Login here.</a></p>
+        </div>
     </div>
 
 </body>
