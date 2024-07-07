@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
@@ -14,28 +15,14 @@
             height: 100vh;
             margin: 0;
         }
-        p{
-            color: #1E5162;
-            font-weight: bold;
-            margin: 0;
-        }
-        .container {
+        .custom-container {
             background-color: #5b97ad;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            width: 800px;
-            display: flex;
-            flex-direction: row;
             overflow: hidden;
         }
         .left {
             background: linear-gradient(to bottom, #073142, #e7e7c9);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 50%;
             color: white;
             text-align: center;
         }
@@ -44,57 +31,16 @@
             height: auto;
             margin-bottom: -30px;
         }
+        .left p {
+            color: #1E5162;
+            font-weight: bold;
+        }
         .right {
             background-color: #5b97ad;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 50%;
+            color: white;
         }
         .right h1 {
             color: #ffffff;
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            margin-left: 20px;
-            color: #ffffff;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            box-sizing: border-box;
-            background-color: #ffffff;
-            font-size: 16px;
-        }
-        .form-group .submit-btn {
-            width: 150px;
-            padding: 10px;
-            display: block;
-            margin-right: 10px;
-            background-color: #1e81b0;
-            border: none;
-            color: #ffffff;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
-        }
-        .form-group .submit-btn:hover {
-            background-color: #166d90;
-        }
-        .register-link {
-            margin-top: 10px;
-            text-align: center;
         }
         .register-link a {
             color: #ffffff;
@@ -104,39 +50,60 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+
+        .button{
+            background-color: #1E5162;
+            color: #fff;
+            font-weight: 500;
+            height: 40px;
+            text-decoration: none!important;
+            border: #1E5162;
+            box-shadow: none;
+            border-radius: 5px;
+        }
+        .button:hover{
+            color: #fff;
+            background-color: #13333d;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="left">
-            <img src="../img/logo.png" alt="Whale Logo">
-            <p>Dive deep into Video Wonders</p>
-        </div>
-        <div class="right">
-            <h1>Welcome Back</h1>
-            <form action="login_handler.php" method="post">
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+    <div class="card mb-3 custom-container" style="max-width: 800px;">
+        <div class="row g-0">
+            <div class="col-md-5 left d-flex flex-column justify-content-center align-items-center p-4">
+                <img src="../img/logo.png" class="img-fluid rounded-start" alt="Whale Logo">
+                <p>Dive deep into Video Wonders</p>
+            </div>
+            <div class="col-md-7 right d-flex flex-column justify-content-center p-4">
+                <div class="card-body">
+                    <h1 class="card-title">Welcome Back</h1>
+                    <form action="login_handler.php" method="post">
+                        <!-- Email -->
+                        <div class="mb-3 mt-4">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="mb-3">
+                            <button type="submit" class="btn button w-100" value="Login">Log in</button>
+                        </div>
+                    </form>
+                    <!-- Register Link -->
+                    <div class="register-link text-center mt-4">
+                        <p>Don't have an account yet? <a href="register.php">Register here.</a></p>
+                    </div>
                 </div>
-                <!-- Password -->
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <!-- Submit Button -->
-                <div class="form-group">
-                    <input type="submit" class="submit-btn" value="Login">
-                </div>
-            </form>
-            <!-- Register Link -->
-            <div class="register-link">
-                <p>Don't have an account yet? <a href="register.php">Register here.</a></p>
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybM3rUaDiBfVAnQ8O6BdO9IBb6FxT74IVnYFyc+Zq8qE4FQ6U" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-mQ93A+4dMw0i7RY9smMYeToB1y0tUjF1Zaq7OQq9v9Pzsvhb7cYgkWV+0f1W5LuX" crossorigin="anonymous"></script>
 </body>
 </html>
