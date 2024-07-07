@@ -13,20 +13,21 @@ if (isset($_GET['video_id'])) {
 $start_date = date('Y-m-d');
 ?>
 
-<div class="card col-md-6 align_view_single">
+<div class="container rent_payment_container">
+<div class="card col-md-6 rent_payment">
     <div class="card-header video_details">
-        <p class="card-title video_title">You are renting</p>
-        <a href="index.php?page=rent"><button type="button" class="btn back_button">&lt;</button></a>
+        <p class="card-title video_title rent_payment_title">You are renting</p>
+        <a href="index.php?page=rent"><button type="button" class="back_button">Back</button></a>
     </div>
     <div class="card-body">
-        <p><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
-        <p><strong>Price per day:</strong> <?php echo htmlspecialchars($video['rental_fee']); ?></p>
+        <p class="rent_payment_title"><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
+        <p class="rent_payment_title"><strong>Price per day:</strong> <?php echo htmlspecialchars($video['rental_fee']); ?></p>
         
         <ul class="list-group list-group-flush">
-            <li class="list-group-item mt-3">
+            <!-- <li class="list-group-item rent-list-group-item mt-3">
                 <h3>Payment Method:</h3>
-            </li>
-            <li class="list-group-item">
+            </li> -->
+            <li class="list-group-item rent-list-group-item">
                 <div class="list-button gap-2 mt-2 mb-4">
                     <button type="button" id="gcashbutton" class="mod_button default-button" onclick="method('Gcash')">Gcash</button>
                     <button type="button" id="cardbutton" class="mod_button" onclick="method('Card')">Card</button>
@@ -88,6 +89,7 @@ $start_date = date('Y-m-d');
             </li>
         </ul>
     </div>
+</div>
 </div>
 
 <script>
