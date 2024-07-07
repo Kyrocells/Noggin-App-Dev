@@ -9,11 +9,11 @@ if (isset($_GET['video_id'])) {
     exit();
 }
 ?>
-
-<div class="card col-md-6 align_view_single">
+<div class="single_view_container">
+<div class="card col-md-6 single_view">
     <div class="card-header video_details">
-        <p class="card-title video_title">Video Details</p>
-        <a href="index.php?page=rent"><button type="button" class="btn back_button">&lt;</button></a>
+        <p class="card-title video_title single_view_title">Video Details</p>
+        <a href="index.php?page=rent"><button type="button" class="back_button">Back</button></a>
     </div>
     <div class="card-body">
         <?php if (!empty($video['image'])): ?>
@@ -37,4 +37,5 @@ if (isset($_GET['video_id'])) {
             <button type="submit" class="rent_button">Rent</button>
         </form>
     </div>
+</div>
 </div>
