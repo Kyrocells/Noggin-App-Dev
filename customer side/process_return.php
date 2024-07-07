@@ -1,4 +1,11 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 require_once 'functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -14,6 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $stmt->bind_param("i", $rental_id);
     $stmt->execute();
     $stmt->bind_result($video_id, $video_format, $expected_return_date);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Fetch video title from the videos table
+    $stmt = $conn->prepare("SELECT video_title FROM videos WHERE video_id = ?");
+    $stmt->bind_param("i", $video_id);
+    $stmt->execute();
+    $stmt->bind_result($video_title);
     $stmt->fetch();
     $stmt->close();
 
@@ -54,9 +69,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $stmt->execute();
     $stmt->close();
 
+    // Fetch user details
+    $stmt = $conn->prepare("SELECT email, first_name, last_name FROM users WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($user_email, $first_name, $last_name);
+    $stmt->fetch();
+    $stmt->close();
+
     $conn->close();
+
+    // Send return confirmation email
+    $renter_name = $first_name . ' ' . $last_name;
+    $subject = 'Return Confirmation';
+    $message = "Dear $renter_name,\n\nYour return has been processed successfully. Here are the details:\n\nVideo Title: $video_title\nReturn Date: $current_date\nOverdue Fee: $overdue_fee\n\nThank you for choosing our service!\n\nBest regards,\nVideo Rental Service";
+
+    $mail = new PHPMailer(true);
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'whale3871@gmail.com';
+        $mail->Password = 'almizdofpkezpkgs'; 
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Recipients
+        $mail->setFrom('your_email@gmail.com', 'Video Rental Service');
+        $mail->addAddress($user_email, $renter_name);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = nl2br($message);
+        $mail->AltBody = $message;
+
+        $mail->send();
+        echo 'Return confirmation email has been sent';
+    } catch (Exception $e) {
+        echo "Return confirmation email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
 
     // Redirect back to the rent history page
     header('Location: index.php?page=rent_history');
     exit();
 }
+?>
