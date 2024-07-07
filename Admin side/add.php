@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="form-group">
                         <label for="release_year">Release Year</label>
-                        <input type="number" class="form-control" name="release_year" placeholder="Enter release year" required min="0">
+                        <input type="number" class="form-control" name="release_year" placeholder="Enter release year" required min="0" pattern="[0-9]{4}">
                     </div>
                     <div class="form-group">
                         <label for="actors">Actors</label>
@@ -81,10 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="length">Length</label>
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" name="hours" placeholder="Hours" required min="0">
+                                <input type="text" class="form-control" name="hours" placeholder="Hours" required min="0" pattern="[0-9]">
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="minutes" placeholder="Minutes" required min="0">
+                                <input type="text" class="form-control" name="minutes" placeholder="Minutes" required min="0" pattern="[0-9]">
                             </div>
                         </div>
                     </div>
