@@ -14,12 +14,16 @@ function sendNotification($notifications) {
             padding: 8px;
             text-align: left;
         }
+        td, h2 {
+            color:#13333d;
+        }
         th {
-            background-color: #f2f2f2;
+            background-color: #13333d;
+            color:#fff;
         }
         </style>";
     
-    echo "<h2>Upcoming Return Dates:</h2>\n";
+    echo "<h2 class=\"my-4\">Upcoming Return Dates:</h2>\n";
     echo "<table>\n";
     echo "<tr><th>Video ID</th><th>Video Title</th><th>Return Date</th><th>Total Price</th><th>Payment Method</th></tr>\n";
     
