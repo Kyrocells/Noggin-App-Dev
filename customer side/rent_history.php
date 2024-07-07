@@ -14,7 +14,7 @@ $conn = dbConnect();
 
 // not yet returned = 0
 $sql = "
-    SELECT rv.video_id, v.image, v.video_title
+    SELECT rv.video_id, rv.video_format, v.image, v.video_title
     FROM rented_videos rv
     JOIN videos v ON rv.video_id = v.video_id
     WHERE rv.user_id = ? AND rv.returned = 0
@@ -27,7 +27,7 @@ $stmt->close();
 
 // returned = 1
 $sql = "
-    SELECT rv.video_id, v.image, v.video_title
+    SELECT rv.video_id, rv.video_format, v.image, v.video_title
     FROM rented_videos rv
     JOIN videos v ON rv.video_id = v.video_id
     WHERE rv.user_id = ? AND rv.returned = 1
@@ -73,9 +73,10 @@ $conn->close();
                         <img src="<?php echo htmlspecialchars($video['image']); ?>" class="card-img-top movie_img" alt="movie picture">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($video['video_title']); ?></h5>
+                            <p><strong>Format:</strong> <?php echo htmlspecialchars($video['video_format']); ?></p>
                         </div>
                         <div class="additional-content">
-                            <a href="process_return.php?video_id=<?php echo $video['video_id']; ?>" class="movie_card_button">Return</a>
+                            <a href="process_return.php?video_id=<?php echo $video['video_id']; ?>&video_format=<?php echo urlencode($video['video_format']); ?>" class="movie_card_button">Return</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -94,9 +95,10 @@ $conn->close();
                         <img src="<?php echo htmlspecialchars($video['image']); ?>" class="card-img-top movie_img" alt="movie picture">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($video['video_title']); ?></h5>
+                            <p><strong>Format:</strong> <?php echo htmlspecialchars($video['video_format']); ?></p>
                         </div>
                         <div class="additional-content">
-                            <a href="index.php?page=single_view&video_id=<?php echo $video['video_id']; ?>" class="movie_card_button mb-2">View</a>
+                            <a href="index.php?page=single_return&video_id=<?php echo $video['video_id']; ?>&video_format=<?php echo urlencode($video['video_format']); ?>" class="movie_card_button mb-2">View</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

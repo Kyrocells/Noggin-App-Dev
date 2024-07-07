@@ -61,17 +61,6 @@ if (isset($_GET['id']) && !isset($_GET['confirm'])) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mt-3">
-                            <label for="video_format">Video Format</label><br>
-                            <input type="radio" id="dvd" name="video_format" value="DVD" <?php if ($video['video_format'] === 'DVD') echo 'checked'; ?> disabled>
-                            <label for="dvd">DVD</label><br>
-                            <input type="radio" id="bluray" name="video_format" value="Blu-ray" <?php if ($video['video_format'] === 'Blu-ray') echo 'checked'; ?> disabled>
-                            <label for="bluray">Blu-ray</label><br>
-                            <input type="radio" id="digital" name="video_format" value="Digital" <?php if ($video['video_format'] === 'Digital') echo 'checked'; ?> disabled>
-                            <label for="digital">Digital</label><br>
-                            <!-- -->
-                            <input type="hidden" name="video_format" value="<?php echo htmlspecialchars($video['video_format']); ?>">
-                        </div>
-                        <div class="form-group mt-3">
                             <label for="rental_fee">Rental Fee</label>
                             <input type="number" step="0.01" class="form-control" name="rental_fee" value="<?php echo htmlspecialchars($video['rental_fee']); ?>" readonly>
                         </div>
@@ -79,19 +68,25 @@ if (isset($_GET['id']) && !isset($_GET['confirm'])) {
                             <label for="length">Length</label>
                             <div class="row">
                                 <div class="col">
-                                    <input type="number" class="form-control" name="hours" value="<?php echo floor($video['length'] / 3600); ?>" placeholder="Hours" readonly>
+                                    <input type="number" class="form-control" name="hours" value="<?php echo htmlspecialchars(explode(':', $video['length'])[0]); ?>" placeholder="Hours" readonly>
                                 </div>
                                 <div class="col">
-                                    <input type="number" class="form-control" name="minutes" value="<?php echo floor(($video['length'] % 3600) / 60); ?>" placeholder="Minutes" readonly>
+                                    <input type="number" class="form-control" name="minutes" value="<?php echo htmlspecialchars(explode(':', $video['length'])[1]); ?>" placeholder="Minutes" readonly>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="Image">Cover Image</label><br>
+                            <?php if (!empty($video['Image'])): ?>
+                                <img src="<?php echo htmlspecialchars($video['Image']); ?>" alt="Cover Image" class="img-fluid mb-3">
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
             <div class="card-footer">
-                <a href="delete.php?confirm=yes&id=<?= $videoId; ?>" class="btn admin_button mx-2">Delete</a>
+                <a href="index.php?page=delete&confirm=yes&id=<?= $videoId; ?>" class="btn admin_button mx-2">Delete</a>
                 <a href="index.php?page=view" class="btn admin_button mx-2">Cancel</a>
             </div>
         </div>
@@ -128,5 +123,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-

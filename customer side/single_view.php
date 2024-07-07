@@ -20,13 +20,14 @@ if (isset($_GET['video_id'])) {
             <img src="<?php echo htmlspecialchars($video['image']); ?>" alt="Video Image" class="img-fluid">
         <?php endif; ?>
         <p><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
+        <p><strong>DVD Stocks:</strong> <?php echo htmlspecialchars($video['dvd_stocks']); ?></p>
+        <p><strong>Blu-ray Stocks:</strong> <?php echo htmlspecialchars($video['bray_stocks']); ?></p>
+        <p><strong>Digital:</strong> <?php echo $video['digital'] == 1 ? 'Available' : 'Not Available'; ?></p>
         <p><strong>Genre:</strong> <?php echo htmlspecialchars($video['genre']); ?></p>
         <p><strong>Release Year:</strong> <?php echo htmlspecialchars($video['release_date']); ?></p>
         <p><strong>Description:</strong> <?php echo htmlspecialchars($video['description']); ?></p>
         <p><strong>Actors:</strong> <?php echo htmlspecialchars($video['actors']); ?></p>
-        <p><strong>Duration:</strong> <?php 
-            echo htmlspecialchars($video['length'])." hours"; 
-        ?></p>
+        <p><strong>Duration:</strong> <?php echo htmlspecialchars($video['length']); ?></p>
         <p><strong>Price:</strong> <?php echo htmlspecialchars($video['rental_fee']); ?></p>
     </div>
     <div class="card-footer">

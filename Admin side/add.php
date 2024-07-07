@@ -2,7 +2,6 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once 'functions.php';
 
-
     // Check if file was uploaded successfully
     if (isset($_FILES['Image']) && $_FILES['Image']['error'] === UPLOAD_ERR_OK) {
         $image = $_FILES['Image'];
@@ -14,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Call addVideo function with all parameters
-    addVideo($_POST['title'], $_POST['genre'], $_POST['release_year'], $_POST['numCopies'], $_POST['video_format'], $_POST['price'], $_POST['hours'], $_POST['minutes'], $_POST['actors'],$_POST['desc'],$image);
+    addVideo($_POST['title'], $_POST['genre'], $_POST['release_year'], $_POST['dvdCopies'], $_POST['blurayCopies'], $_POST['digitalFormat'], $_POST['price'], $_POST['hours'], $_POST['minutes'], $_POST['actors'], $_POST['desc'], $image);
 }
 ?>
 
@@ -45,11 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="form-group">
                         <label for="release_year">Release Year</label>
-                        <input type="number" class="form-control" name="release_year" placeholder="Enter release year" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="numCopies">Copies</label>
-                        <input type="number" class="form-control" name="numCopies" placeholder="Enter Copies available" required>
+                        <input type="number" class="form-control" name="release_year" placeholder="Enter release year" required min="0">
                     </div>
                     <div class="form-group">
                         <label for="actors">Actors</label>
@@ -57,33 +52,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="form-group">
                         <label for="desc">Description</label>
-                        <textarea type="text" class="form-control" name="desc"  rows="5" placeholder="Enter description" required></textarea>
+                        <textarea class="form-control" name="desc" rows="5" placeholder="Enter description" required></textarea>
                     </div>
                 </div>
 
                 <!-- Second Column -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="video_format">Video Format</label><br>
-                        <input type="radio" id="dvd" name="video_format" value="DVD" required>
-                        <label for="dvd">DVD</label><br>
-                        <input type="radio" id="bluray" name="video_format" value="Blu-ray" required>
-                        <label for="bluray">Blu-ray</label><br>
-                        <input type="radio" id="digital" name="video_format" value="Digital" required>
-                        <label for="digital">Digital</label><br>
+                        <label for="dvdCopies">DVD Copies</label>
+                        <input type="number" class="form-control" name="dvdCopies" placeholder="Enter DVD Copies" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="blurayCopies">Blu-ray Copies</label>
+                        <input type="number" class="form-control" name="blurayCopies" placeholder="Enter Blu-ray Copies" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="digitalFormat">Digital Format</label><br>
+                        <input type="radio" id="digitalYes" name="digitalFormat" value="Yes" required>
+                        <label for="digitalYes">Yes</label><br>
+                        <input type="radio" id="digitalNo" name="digitalFormat" value="No" required>
+                        <label for="digitalNo">No</label><br>
                     </div>
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <input type="number" step="0.01" class="form-control" name="price" placeholder="Enter price" required>
+                        <input type="number" step="0.01" class="form-control" name="price" placeholder="Enter price" required min="0">
                     </div>
                     <div class="form-group">
                         <label for="length">Length</label>
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" name="hours" placeholder="Hours" required>
+                                <input type="text" class="form-control" name="hours" placeholder="Hours" required min="0">
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="minutes" placeholder="Minutes" required>
+                                <input type="text" class="form-control" name="minutes" placeholder="Minutes" required min="0">
                             </div>
                         </div>
                     </div>
@@ -100,47 +101,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </form>
 </div>
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    async function fetchData(url) {
-        const response = await fetch(url);
-        return response.json();
-    }
-
-    async function init() {
-        try {
-            const videoData = await fetchData('http://localhost/TW21/FinalProject/videos_data.php'); // Update with the correct path
-
-            const doughnutConfig = {
-                type: 'line',
-                data: {
-                    labels: videoData.map(item => item.video_title),
-                    datasets: [{
-                        label: 'Number of Videos Available',
-                        data: videoData.map(item => item.num_videos_available),
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
-
-            const ctx = document.getElementById('myChart').getContext('2d');
-            new Chart(ctx, doughnutConfig);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    window.onload = init;
-</script>

@@ -60,6 +60,21 @@ $start_date = date('Y-m-d');
                     </div>
 
                     <div class="mb-3">
+                        <label for="videoFormat" class="form-label">Video Format:</label>
+                        <select class="form-control" id="videoFormat" name="video_format" required onchange="calculateTotalPrice()">
+                            <?php if ($video['dvd_stocks'] > 0): ?>
+                                <option value="DVD" data-extra-fee="300">DVD</option>
+                            <?php endif; ?>
+                            <?php if ($video['bray_stocks'] > 0): ?>
+                                <option value="Blu-ray" data-extra-fee="500">Blu-ray</option>
+                            <?php endif; ?>
+                            <?php if ($video['digital'] == 1): ?>
+                                <option value="Digital" data-extra-fee="250">Digital</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="totalPrice" class="form-label">Total Price:</label>
                         <input type="text" class="form-control" id="totalPrice" name="total_price" readonly>
                     </div>
@@ -111,11 +126,13 @@ $start_date = date('Y-m-d');
         const startDate = new Date(document.getElementById('startDate').value);
         const returnDate = new Date(document.getElementById('returnDate').value);
         const rentalFee = parseFloat(document.getElementById('rentalFee').value);
+        const videoFormat = document.getElementById('videoFormat');
+        const extraFee = parseFloat(videoFormat.options[videoFormat.selectedIndex].getAttribute('data-extra-fee'));
 
         if (returnDate >= startDate) {
             const timeDiff = returnDate - startDate;
             const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-            const totalPrice = days * rentalFee;
+            const totalPrice = days * rentalFee + extraFee;
             document.getElementById('totalPrice').value = totalPrice.toFixed(2);
         } else {
             document.getElementById('totalPrice').value = '';

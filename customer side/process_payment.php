@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $start_date = $_POST['start_date'];
     $return_date = $_POST['return_date'];
+    $video_format = $_POST['video_format'];
     $payment_method = $_POST['payment_method'];
 
     // If payment is by card, also get card details
@@ -38,11 +39,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->begin_transaction();
 
     try {
-        // Insert into rented_videos
-        $stmt = $conn->prepare("INSERT INTO rented_videos (video_id, user_id, renter_name, return_date, start_date) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("iisss", $video_id, $user_id, $renter_name, $return_date, $start_date);
+        // Insert into rented_videos with returned set to 0
+        $stmt = $conn->prepare("INSERT INTO rented_videos (video_id, user_id, renter_name, return_date, start_date, returned, video_format) VALUES (?, ?, ?, ?, ?, 0, ?)");
+        $stmt->bind_param("iissss", $video_id, $user_id, $renter_name, $return_date, $start_date, $video_format);
         $stmt->execute();
         $stmt->close();
+
+        // Update the stock of the selected video format
+        if ($video_format === 'DVD') {
+            $stmt = $conn->prepare("UPDATE videos SET dvd_stocks = dvd_stocks - 1 WHERE video_id = ?");
+        } elseif ($video_format === 'Blu-ray') {
+            $stmt = $conn->prepare("UPDATE videos SET bray_stocks = bray_stocks - 1 WHERE video_id = ?");
+        }
+        if ($video_format !== 'Digital') {
+            $stmt->bind_param("i", $video_id);
+            $stmt->execute();
+            $stmt->close();
+        }
 
         // Decrease the number of copies in the videos table
         $stmt = $conn->prepare("UPDATE videos SET num_videos_available = num_videos_available - 1 WHERE video_id = ?");
@@ -52,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Insert into transaction_history
         $transaction_date = date('Y-m-d H:i:s');
-        $stmt = $conn->prepare("INSERT INTO transaction_history (date, total_price, user_id, video_id, method_of_payment) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sdiis", $transaction_date, $price, $user_id, $video_id, $payment_method);
+        $stmt = $conn->prepare("INSERT INTO transaction_history (date, total_price, user_id, video_id, method_of_payment, video_format) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sdisss", $transaction_date, $price, $user_id, $video_id, $payment_method, $video_format);
         $stmt->execute();
         $stmt->close();
 

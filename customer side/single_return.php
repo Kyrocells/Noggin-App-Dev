@@ -3,9 +3,8 @@ require_once 'functions.php';
 
 if (isset($_GET['video_id'])) {
     $video_id = $_GET['video_id'];
-    $user_id = $_GET['user_id'];
-    //add additional nalang dito to determine etc. idk
     $video = getVideoDetails($video_id);
+    $transaction = getTransactionDetails($video_id);
 } else {
     echo "No video ID provided.";
     exit();
@@ -14,18 +13,14 @@ if (isset($_GET['video_id'])) {
 
 <div class="card col-md-6 align_view_single">
     <div class="card-header video_details">
-        <p class="card-title video_title">Video Details</p>
+        <p class="card-title video_title">Video Return Details</p>
+        <a href="index.php?page=rent_history"><button type="button" class="btn back_button">&lt;</button></a>
     </div>
     <div class="card-body">
-        <?php if (!empty($video['image'])): ?>
-            <img src="<?php echo htmlspecialchars($video['image']); ?>" alt="Video Image" class="img-fluid">
-        <?php endif; ?>
-        <p><strong>Transaction ID:</strong> <?php echo htmlspecialchars($video['transaction_id']); ?></p>
-        <p><strong>Date:</strong> <?php echo htmlspecialchars($video['date']); ?></p>
-        <p><strong>Price:</strong> <?php echo htmlspecialchars($video['total_price']); ?></p>
-        <p><strong>Payment Type:</strong> <?php echo htmlspecialchars($video['method_of_payment']); ?></p>
-    </div>
-    <div class="card-footer">
-        <a href="index.php?page=rent_history"><button type="button" class="btn back_button">Back</button></a>
+        <p><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
+        <p><strong>Start of Rent:</strong> <?php echo htmlspecialchars($transaction['start_date']); ?></p>
+        <p><strong>End of Rent:</strong> <?php echo htmlspecialchars($transaction['return_date']); ?></p>
+        <p><strong>Total Price:</strong> <?php echo htmlspecialchars($transaction['total_price']); ?></p>
+        <p><strong>Method of Payment:</strong> <?php echo htmlspecialchars($transaction['method_of_payment']); ?></p>
     </div>
 </div>

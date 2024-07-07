@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $price, $hours, $minutes, $actors, $desc, $image) {
+function addVideo($title, $genre, $release_year, $dvdCopies, $blurayCopies, $digitalFormat, $price, $hours, $minutes, $actors, $desc, $image) {
     global $conn;
 
     // Handle image upload
@@ -14,10 +14,8 @@ function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $pric
         return;
     }
 
-    
-    $targetDir = "uploads/";
+    $targetDir = "../img/";
 
-    
     if (!file_exists($targetDir) && !is_dir($targetDir)) {
         mkdir($targetDir, 0755, true); 
     }
@@ -25,14 +23,12 @@ function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $pric
     $targetFile = $targetDir . basename($image['name']);
     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-    
     $check = getimagesize($image['tmp_name']);
     if ($check === false) {
         echo "File is not an image.";
         return;
     }
 
-    
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         return;
@@ -44,13 +40,18 @@ function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $pric
         return;
     }
 
-    
     $length = $hours . ':' . $minutes;
 
-    
-    $stmt = $conn->prepare("INSERT INTO videos (video_title, genre, release_date, num_videos_available, video_format, rental_fee, length, Image, actors, description)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssiissssss", $title, $genre, $release_year, $numCopies, $videoformat, $price, $length, $targetFile, $actors, $desc);
+    // Convert digitalFormat to 1 or 0
+    $digital = ($digitalFormat === 'Yes') ? 1 : 0;
+
+    // Calculate total copies
+    $numCopies = $dvdCopies + $blurayCopies;
+
+    // Insert into videos table
+    $stmt = $conn->prepare("INSERT INTO videos (video_title, genre, release_date, num_videos_available, dvd_stocks, bray_stocks, digital, rental_fee, length, image, actors, description)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiisiiissss", $title, $genre, $release_year, $numCopies, $dvdCopies, $blurayCopies, $digital, $price, $length, $targetFile, $actors, $desc);
 
     if ($stmt->execute()) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -65,6 +66,7 @@ function addVideo($title, $genre, $release_year, $numCopies, $videoformat, $pric
 
     $stmt->close();
 }
+
 
 function getVideos() {
     global $conn;
@@ -98,15 +100,21 @@ function getVideoById($id) {
     }
 }
 
-function editVideo($id, $title, $genre, $release_year, $numCopies, $videoformat, $price, $hours, $minutes, $actors, $desc, $image) {
+function editVideo($id, $title, $genre, $release_year, $dvdCopies, $blurayCopies, $digitalFormat, $price, $hours, $minutes, $actors, $desc, $image) {
     global $conn;
 
-    $total_length = $hours * 3600 + $minutes * 60;
+    $total_length = $hours . ':' . $minutes;
+
+    // Convert digitalFormat to 1 or 0
+    $digital = ($digitalFormat === 'Yes') ? 1 : 0;
+
+    // Calculate total copies
+    $numCopies = $dvdCopies + $blurayCopies;
 
     // Handle image upload
     if (!empty($image['name'])) {
         // Directory where images will be stored
-        $targetDir = "uploads/";
+        $targetDir = "../img/";
 
         // Create the directory if it doesn't exist
         if (!file_exists($targetDir) && !is_dir($targetDir)) {
@@ -136,14 +144,12 @@ function editVideo($id, $title, $genre, $release_year, $numCopies, $videoformat,
         }
 
         // Update database with new image path
-        $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, num_videos_available = ?, 
-                                video_format = ?, rental_fee = ?, length = ?, actors = ?, description = ?, Image = ? WHERE video_id = ?");
-        $stmt->bind_param("ssiissssssi", $title, $genre, $release_year, $numCopies, $videoformat, $price, $total_length, $actors, $desc, $targetFile, $id);
+        $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, dvd_stocks = ?, bray_stocks = ?, digital = ?, num_videos_available = ?, rental_fee = ?, length = ?, actors = ?, description = ?, Image = ? WHERE video_id = ?");
+        $stmt->bind_param("ssiisisissssi", $title, $genre, $release_year, $dvdCopies, $blurayCopies, $digital, $numCopies, $price, $total_length, $actors, $desc, $targetFile, $id);
     } else {
         // Update database without changing image
-        $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, num_videos_available = ?, 
-                                video_format = ?, rental_fee = ?, length = ?, actors = ?, description = ? WHERE video_id = ?");
-        $stmt->bind_param("ssiisssssi", $title, $genre, $release_year, $numCopies, $videoformat, $price, $total_length, $actors, $desc, $id);
+        $stmt = $conn->prepare("UPDATE videos SET video_title = ?, genre = ?, release_date = ?, dvd_stocks = ?, bray_stocks = ?, digital = ?, num_videos_available = ?, rental_fee = ?, length = ?, actors = ?, description = ? WHERE video_id = ?");
+        $stmt->bind_param("ssiisisisssi", $title, $genre, $release_year, $dvdCopies, $blurayCopies, $digital, $numCopies, $price, $total_length, $actors, $desc, $id);
     }
 
     if ($stmt->execute()) {
@@ -153,6 +159,8 @@ function editVideo($id, $title, $genre, $release_year, $numCopies, $videoformat,
         return false;
     }
 }
+
+
 
 
 function deleteVideo($id) {
@@ -167,5 +175,21 @@ function deleteVideo($id) {
         echo "Error deleting record: " . $stmt->error;
         return false;
     }
+}
+
+function getTransactionHistory() {
+    global $conn;
+    
+    $sql = "SELECT * FROM transaction_history";
+    $result = $conn->query($sql);
+
+    $transactions = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $transactions[] = $row;
+        }
+    }
+
+    return $transactions;
 }
 ?>

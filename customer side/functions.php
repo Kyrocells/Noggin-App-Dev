@@ -82,4 +82,24 @@ function getVideoDetails($video_id) {
 
     return $video;
 }
+
+function getTransactionDetails($video_id) {
+    $conn = dbConnect();
+    
+    $sql = "
+        SELECT rv.start_date, rv.return_date, th.total_price, th.method_of_payment
+        FROM rented_videos rv
+        JOIN transaction_history th ON rv.video_id = th.video_id
+        WHERE rv.video_id = ? AND rv.returned = 1
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $video_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $transaction = $result->fetch_assoc();
+    $stmt->close();
+    $conn->close();
+    
+    return $transaction;
+}
 ?>

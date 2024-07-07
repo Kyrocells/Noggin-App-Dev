@@ -7,20 +7,6 @@ body {
     background-color: #ADD8E6;
 }
 
-#chartContainer {
-    position: absolute; /* Position the container */
-    top: 21rem; /* Adjust top spacing */
-    right: 20rem; /* Adjust right spacing */
-    width: 60rem; /* Set a fixed width */
-    height: 40rem; /* Set a fixed height */
-    z-index: 1000; /* Ensure it's on top of other elements */
-}
-
-canvas {
-    width: 100% !important; /* Ensure the canvas fills its container width */
-    height: 100% !important; /* Ensure the canvas fills its container height */
-}
-
 .offcanvas {
     background-color: var(--offcanvas-bg-color);
     box-shadow: 5px 5px 15px 0px rgba(30, 81, 98, 0.25);
