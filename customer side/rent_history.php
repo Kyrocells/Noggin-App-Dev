@@ -76,7 +76,7 @@ $conn->close();
                             <h5 class="card-title"><strong>Format:</strong> <?php echo htmlspecialchars($video['video_format']); ?></h5>
                         </div>
                         <div class="additional-content">
-                            <a href="process_return.php?video_id=<?php echo $video['video_id']; ?>&video_format=<?php echo urlencode($video['video_format']); ?>" class="movie_card_button">Return</a>
+                            <a href="process_return.php?video_id=<?php echo $video['video_id']; ?>&video_format=<?php echo urlencode($video['video_format']); ?>" class="movie_card_button" id="return_confirm">Return</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -103,6 +103,17 @@ $conn->close();
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<!-- confirmation pop up here -->
+<div id="confirm_return" class="pop_up_confirmation_modal">
+    <div class="pop_up_confirmation">
+        <p>Are you sure you want to return this video?</p>
+        <div class="pop_up_buttons">
+            <button id="confirm_the_return" class="back_button mx-2">Yes</button>
+            <button id="cancel_the_return" class="back_button mx-2">No</button>
         </div>
     </div>
 </div>
@@ -137,4 +148,37 @@ $conn->close();
             });
         });
     });
+
+
+    // this is for the ano, anonas, the pop up
+    document.addEventListener('DOMContentLoaded', function() {
+    
+    var modal = document.getElementById('confirm_return');
+    var conf = document.getElementById('confirm_the_return');
+    var cancel = document.getElementById('cancel_the_return');
+
+    
+    document.querySelectorAll('#return_confirm').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var returnUrl = this.href;
+
+            modal.style.display = 'block';
+
+            conf.onclick = function() {
+                window.location.href = returnUrl;
+            };
+
+            cancel.onclick = function() {
+                modal.style.display = 'none';
+            };
+        });
+    });
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
+});
 </script>
