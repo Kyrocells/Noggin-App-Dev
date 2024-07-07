@@ -61,8 +61,8 @@ $conn->close();
             </ul>
         </div>
         <form class="form-inline mb-0 searchbar">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-            <button class="search_button mx-2" type="submit">Search</button>
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search_input">
+            <button class="search_button mx-2" type="submit" id="search_button">Search</button>
         </form>
     </nav>
     
@@ -109,17 +109,20 @@ $conn->close();
 
 <!-- Show and hide videos per category using filter -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const filter = document.querySelectorAll('#genre-filter .dropdown-item');
-        const genre_title = document.querySelectorAll('.genre-heading');
+        const genreTitles = document.querySelectorAll('.genre-heading');
         const genres = document.querySelectorAll('.genre-row');
+        const searchInput = document.getElementById('search_input');
+        const searchButton = document.getElementById('search_button');
 
+        //Filter
         filter.forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const selectedGenre = this.getAttribute('data-genre');
 
-                genre_title.forEach(heading => {
+                genreTitles.forEach(heading => {
                     if (selectedGenre === 'all' || heading.getAttribute('data-genre') === selectedGenre) {
                         heading.style.display = 'block';
                     } else {
@@ -136,5 +139,50 @@ $conn->close();
                 });
             });
         });
+
+        //Search
+        searchButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const searchTerm = searchInput.value.toLowerCase();
+
+            let anyMatchFound = false; 
+
+            genreTitles.forEach(heading => {
+                heading.style.display = 'none'; 
+            });
+
+            genres.forEach(row => {
+                let matchFound = false;
+                const cards = row.querySelectorAll('.movie_card');
+
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    if (title.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        matchFound = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (matchFound) {
+                    row.style.display = 'flex';
+                    const genreTitle = document.querySelector('.genre-heading[data-genre="' + row.getAttribute('data-genre') + '"]');
+                    if (genreTitle) {
+                        genreTitle.style.display = 'block'; 
+                    }
+                    anyMatchFound = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (!anyMatchFound) {
+                genreTitles.forEach(heading => {
+                    heading.style.display = 'none';
+                });
+            }
+        });
     });
 </script>
+
