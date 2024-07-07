@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($user['admin_rights'] == 1) {
             header('Location: ../admin/index.php');
         } else {
-            header('Location: customer/index.php');
+            header('Location: index.php');
         }
         exit();
     } else {
