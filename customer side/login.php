@@ -73,7 +73,7 @@
     <div class="card mb-3 custom-container" style="max-width: 800px;">
         <div class="row g-0">
             <div class="col-md-5 left d-flex flex-column justify-content-center align-items-center p-4">
-                <img src="../img/logo.png" class="img-fluid rounded-start" alt="Whale Logo">
+                <a href="homepage.html"><img src="../img/logo.png" class="img-fluid rounded-start" alt="Whale Logo"></a>
                 <p>Dive deep into Video Wonders</p>
             </div>
             <div class="col-md-7 right d-flex flex-column justify-content-center p-4">
