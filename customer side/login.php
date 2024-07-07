@@ -1,3 +1,44 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once 'functions.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $conn = dbConnect();
+
+    $email = $conn->real_escape_string($email);
+    $password = $conn->real_escape_string($password);
+    
+    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        session_start();
+        $user = $result->fetch_assoc();
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['email'] = $user['email'];
+
+        if ($user['admin_rights'] == 1) {
+            header('Location: ../admin/index.php');
+        } else {
+            header('Location: index.php');
+        }
+        exit();
+    } else {
+        // Invalid login
+        // echo "Invalid email or password.";
+        $invalid_credentials = "Invalid email or password.";
+    }
+
+    $conn->close();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +120,7 @@
             <div class="col-md-7 right d-flex flex-column justify-content-center p-4">
                 <div class="card-body">
                     <h1 class="card-title">Welcome Back</h1>
-                    <form action="login_handler.php" method="post">
+                    <form action="login.php" method="post">
                         <!-- Email -->
                         <div class="mb-3 mt-4">
                             <label for="email" class="form-label">Email</label>
@@ -94,6 +135,12 @@
                         <div class="mb-3">
                             <button type="submit" class="btn button w-100" value="Login">Log in</button>
                         </div>
+                        <!-- invalid credentials -->
+                        <?php if (isset($invalid_credentials)): ?>
+                            <div class="alert alert-danger text-center" role="alert">
+                                <?php echo $invalid_credentials; ?>
+                            </div>
+                        <?php endif; ?>
                     </form>
                     <!-- Register Link -->
                     <div class="register-link text-center mt-4">
@@ -107,3 +154,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-mQ93A+4dMw0i7RY9smMYeToB1y0tUjF1Zaq7OQq9v9Pzsvhb7cYgkWV+0f1W5LuX" crossorigin="anonymous"></script>
 </body>
 </html>
+
