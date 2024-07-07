@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <style>
@@ -19,7 +20,7 @@
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            width: 600px;
+            /* width: 600px; */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -51,7 +52,7 @@
         }
         .form-group label {
             display: block;
-            margin-left: 20px;
+            /* margin-left: 20px; */
             margin-bottom: 5px;
             color: #ffffff;
         }
@@ -59,7 +60,7 @@
             width: 100%;
             padding: 10px;
             border: none;
-            border-radius: 10px;
+            border-radius: 5px;
             box-sizing: border-box;
             background-color: #ffffff;
             font-size: 16px;
@@ -101,60 +102,67 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+        .row{
+            align-items:center;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <div class="logo">
-                <a href="homepage.html"><img src="../img/logo.png" alt="Logo"></a>
-            </div>
-            <h1>Register</h1>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="homepage.html"><img src="../img/logo.png" alt="Logo"></a>
         </div>
-        <form action="register_handler.php" method="post">
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <!-- Username -->
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <!-- Password -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <!-- First Name and Last Name -->
-            <div class="form-group inline">
-                <div class="first-name-input">
-                    <label for="first_name">First Name</label>
-                    <input type="text" id="first_name" name="first_name" required>
+        <h1>Register</h1>
+    </div>
+    <form action="register_handler.php" method="post" id="registration">
+        <div class="row mt-4">
+            <div class="col-md-5">
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
                 </div>
-                <div class="last-name-input">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" id="last_name" name="last_name" required>
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
                 </div>
             </div>
-            <!-- Phone Number -->
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="text" id="phone" name="phone" required>
-            </div>
-            <!-- Address and City -->
-            <div class="form-group inline">
-                <div class="address-input">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" required>
+            <div class="col-md-7">
+                <!-- First Name and Last Name -->
+                <div class="form-group">
+                    <label for="first_name">Name</label>
+                <div class="input-group">
+                    <span class="input-group-text">First Name</span>
+                    <input type="text" id="first_name" name="first_name" class="form-control" required>
+                    <span class="input-group-text">Last Name</span>
+                    <input type="text" type="text" id="last_name" name="last_name" class="form-control" required>
                 </div>
-                <div class="city-input">
-                    <label for="city">City</label>
-                    <input type="text" id="city" name="city" required>
+                </div>
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" class="form-control" required>
+                </div>
+                <!-- address -->
+                <div class="form-group">
+                    <label for="first_name">Address</label>
+                <div class="input-group">
+                    <span class="input-group-text" for="address">Address</span>
+                    <input type="text" id="address" name="address" class="form-control" required>
+                    <span class="input-group-text" for="city">City</span>
+                    <input type="text" id="city" name="city" class="form-control" required>
+                </div>
                 </div>
             </div>
+        </div>
             <!-- Submit Button -->
             <div class="form-group">
                 <input type="submit" class="submit-btn" value="Register">
@@ -166,5 +174,48 @@
         </div>
     </div>
 
+
+    <script>
+    function validateForm() {
+        var email = document.getElementById('email').value;
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var firstName = document.getElementById('first_name').value;
+        var lastName = document.getElementById('last_name').value;
+        var phone = document.getElementById('phone').value;
+        var address = document.getElementById('address').value;
+        var city = document.getElementById('city').value;
+
+        if (!email.includes('@') || !email.includes('.')) {
+            alert('Please enter a valid email address.');
+            return false;
+        }
+
+        if (username.length < 4) {
+            alert('Username must be at least 4 characters long.');
+            return false;
+        }
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters long.');
+            return false;
+        }
+
+        if (!(/^\d{11}$/.test(phoneNumber))) {
+            alert('Please enter a valid phone number (digits only).');
+            return false;
+        }
+
+        if (firstName === '' || lastName === '' || address === '' || city === '') {
+            alert('Please fill out all required fields.');
+            return false;
+        }
+
+        return true;
+    }
+
+    document.getElementById('registration').onsubmit = function() {
+        return validateForm();
+    };
+</script>
 </body>
 </html>
