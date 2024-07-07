@@ -9,6 +9,9 @@ if (isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
+
+//check if what page ang active
+$current_page = isset($_GET['page']) ? $_GET['page'] : 'rent';
 ?>
 
 <aside class="sidebar">
@@ -29,12 +32,12 @@ if (isset($_SESSION['user_id'])) {
             </div>
             <!-- buttons -->
             <div class="list-group my-4">
-                <a href="index.php?page=rent" class="list-group-item list-group-item-action active" aria-current="true">
+                <a href="index.php?page=rent" class="list-group-item list-group-item-action <?php echo $current_page == 'rent' ? 'active' : 'not_active'; ?>" aria-current="true">
                     Rent
                 </a>
-                <a href="index.php?page=rent_history" class="list-group-item list-group-item-action not_active">Rent History</a>
-                <a href="index.php?page=notifications" class="list-group-item list-group-item-action not_active">Notifications</a>
-                <a href="index.php?page=profile" class="list-group-item list-group-item-action not_active">Profile</a>
+                <a href="index.php?page=rent_history" class="list-group-item list-group-item-action <?php echo $current_page == 'rent_history' ? 'active' : 'not_active'; ?>">Rent History</a>
+                <a href="index.php?page=notifications" class="list-group-item list-group-item-action <?php echo $current_page == 'notifications' ? 'active' : 'not_active'; ?>">Notifications</a>
+                <a href="index.php?page=profile" class="list-group-item list-group-item-action <?php echo $current_page == 'profile' ? 'active' : 'not_active'; ?>">Profile</a>
                 <a href="logout.php" class="list-group-item list-group-item-action not_active">Logout</a>
             </div>
         </div>
