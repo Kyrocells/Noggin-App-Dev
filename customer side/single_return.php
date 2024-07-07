@@ -11,10 +11,11 @@ if (isset($_GET['video_id'])) {
 }
 ?>
 
-<div class="card col-md-6 align_view_single">
+<div class="single_return_container">
+<div class="card col-md-6 single_return">
     <div class="card-header video_details">
-        <p class="card-title video_title">Video Return Details</p>
-        <a href="index.php?page=rent_history"><button type="button" class="btn back_button">&lt;</button></a>
+        <p class="card-title video_title single_return_title">Video Return Details</p>
+        <a href="index.php?page=rent_history"><button type="button" class="back_button">Back</button></a>
     </div>
     <div class="card-body">
         <p><strong>Title:</strong> <?php echo htmlspecialchars($video['video_title']); ?></p>
@@ -23,4 +24,5 @@ if (isset($_GET['video_id'])) {
         <p><strong>Total Price:</strong> <?php echo htmlspecialchars($transaction['total_price']); ?></p>
         <p><strong>Method of Payment:</strong> <?php echo htmlspecialchars($transaction['method_of_payment']); ?></p>
     </div>
+</div>
 </div>
