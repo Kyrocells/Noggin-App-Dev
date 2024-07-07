@@ -73,7 +73,7 @@ $conn->close();
                         <img src="<?php echo htmlspecialchars($video['image']); ?>" class="card-img-top movie_img" alt="movie picture">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($video['video_title']); ?></h5>
-                            <p><strong>Format:</strong> <?php echo htmlspecialchars($video['video_format']); ?></p>
+                            <h5 class="card-title"><strong>Format:</strong> <?php echo htmlspecialchars($video['video_format']); ?></h5>
                         </div>
                         <div class="additional-content">
                             <a href="process_return.php?video_id=<?php echo $video['video_id']; ?>&video_format=<?php echo urlencode($video['video_format']); ?>" class="movie_card_button">Return</a>
