@@ -1,10 +1,10 @@
 <?php
 
 function dbConnect() {
-    $host = 'localhost'; // Your database host
-    $dbname = 'video_rental_noggin'; // Your database name
-    $username = 'root'; // Your database username
-    $password = ''; // Your database password
+    $host = 'localhost'; 
+    $dbname = 'video_rental_noggin'; 
+    $username = 'root'; 
+    $password = '';
 
     $conn = new mysqli($host, $username, $password, $dbname);
 
