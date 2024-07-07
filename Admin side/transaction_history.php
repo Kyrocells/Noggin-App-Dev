@@ -14,6 +14,7 @@ $transactions = getTransactionHistory();
                 <thead>
                     <tr>
                         <th>Date</th>
+                        <th>Rental ID</th>
                         <th>Total Price</th>
                         <th>User ID</th>
                         <th>Video Format</th>
@@ -27,6 +28,7 @@ $transactions = getTransactionHistory();
                         foreach ($transactions as $transaction) {
                             echo "<tr>";
                             echo "<td>" . htmlspecialchars($transaction['date']) . "</td>";
+                            echo "<td>" . htmlspecialchars($transaction['rental_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($transaction['total_price']) . "</td>";
                             echo "<td>" . htmlspecialchars($transaction['user_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($transaction['video_format']) . "</td>";
