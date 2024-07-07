@@ -108,7 +108,7 @@
     <div class="container">
         <div class="header">
             <div class="logo">
-                <img src="../img/logo.png" alt="Logo">
+                <a href="homepage.html"><img src="../img/logo.png" alt="Logo"></a>
             </div>
             <h1>Register</h1>
         </div>
