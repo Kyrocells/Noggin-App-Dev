@@ -81,7 +81,6 @@ $start_date = date('Y-m-d');
                     <input type="hidden" id="rentalFee" value="<?php echo htmlspecialchars($video['rental_fee']); ?>">
                     <input type="hidden" name="payment_method" id="paymentMethod">
 
-                    <!-- Change button type to 'button' to prevent default form submission -->
                     <button type="button" class="btn confirm_payment_button my-4" id="confirmPaymentBtn">Confirm Payment</button>
                 </form>
             </li>
@@ -100,6 +99,9 @@ $start_date = date('Y-m-d');
             </div>
             <div class="modal-body modal_text">
                 <p class="modal-body modal_text">Your payment has been processed successfully.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn back_button" id="modalCloseBtn" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -156,8 +158,24 @@ $start_date = date('Y-m-d');
 
     document.getElementById('confirmPaymentBtn').addEventListener('click', function (event) {
         event.preventDefault();
-        var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-        paymentModal.show();
+
+        var form = document.getElementById('form-element');
+        if (form.checkValidity()) {
+            // pag valid form saka lang mag appear si modal
+            var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            paymentModal.show();
+        } else {
+            form.classList.add('was-validated');
+        }
+    });
+
+    document.getElementById('modalCloseBtn').addEventListener('click', function() {
+        var form = document.getElementById('form-element');
+        if (form.checkValidity()) {
+            form.submit();
+        } else {
+            form.classList.add('was-validated');
+        }
     });
 
     document.getElementById('paymentModal').addEventListener('click', function(event) {
